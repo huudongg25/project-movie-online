@@ -40,7 +40,7 @@ server.use(bodyParser.json());
 const app = http.createServer(server);
 const io = new Server(app, {
   cors: {
-    origin: "http://localhost:8000",
+    origin: "http://localhost:3000",
   },
 });
 
@@ -71,7 +71,7 @@ const io = new Server(app, {
 //connect client
 server.use(
   cors({
-    origin: "https://project-module-2.onrender.com",
+    origin: "http://localhost:3000",
     credentials: true,
     optionsSuccessStatus: 200,
   })
