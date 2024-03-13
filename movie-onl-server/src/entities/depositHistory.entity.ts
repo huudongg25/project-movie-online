@@ -1,9 +1,8 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../configs/db.config";
 import User from "./user.entity";
-import Movie from "./movie.entity";
-const Review = sequelize.define(
-  "reviews",
+const DepositHistory = sequelize.define(
+  "depositHistories",
   {
     id: {
       primaryKey: true,
@@ -16,36 +15,22 @@ const Review = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    movieId: {
-      type: DataTypes.INTEGER,
+    amount: {
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
-    },
-    rattingPoint: {
-      type: DataTypes.INTEGER,
-    },
-    content: {
-      type: DataTypes.STRING,
+      defaultValue: 0,
     },
   },
   {
     timestamps: true,
   }
 );
-Review.belongsTo(User, {
+DepositHistory.belongsTo(User, {
   foreignKey: "userId",
   onDelete: "CASCADE",
   onUpdate: "CASCADE",
 });
-User.hasMany(Review, {
+User.hasOne(DepositHistory, {
   foreignKey: "userId",
 });
-Review.belongsTo(Movie, {
-  foreignKey: "movieId",
-  onDelete: "CASCADE",
-  onUpdate: "CASCADE",
-});
-Movie.hasMany(Review, {
-  foreignKey: "movieId",
-});
-
-export default Review;
+export default DepositHistory;

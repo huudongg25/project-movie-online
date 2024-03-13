@@ -10,23 +10,27 @@ const Banner = sequelize.define(
       autoIncrement: true,
       allowNull: false,
     },
-    email: {
+    title: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
     },
-    password: {
+    image: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    status: {
-      type: DataTypes.INTEGER,
+    targetUrl: {
+      type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: 1,
     },
-    role: {
+    endDate: {
       type: DataTypes.INTEGER,
       allowNull: false,
+    },
+    isActive: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
     },
   },
   {

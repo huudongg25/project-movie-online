@@ -8,7 +8,9 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import path from "path";
 import http from "http";
-import { Server, Socket } from "socket.io"; //config file .env
+import { Server } from "socket.io"; //config file .env
+import createTable from "./entities/index.entity";
+import sequelize from "./configs/db.config";
 dotenv.config();
 //create server with express
 const server = express();
@@ -35,7 +37,7 @@ server.use(urlencoded());
 //body-parser
 server.use(bodyParser.json());
 //database
-// sequelize.authenticate();
+sequelize.authenticate();
 //socket
 const app = http.createServer(server);
 const io = new Server(app, {
@@ -79,7 +81,7 @@ server.use(
 //route on url
 // Router(server);
 //create entity table db
-// createTable();
+createTable();
 //address server
 app.listen(port, () => {
   console.log(`server on port ${port}`);
