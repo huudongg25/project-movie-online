@@ -1,7 +1,7 @@
 import User from "../entities/user.entity";
 import { UserType } from "../types/user.type";
 import { DatabaseConnectionError } from "../exception/index.exception";
-import { MSG_MODEL_ERROR } from "../common/msg.error";
+import { MSG_ERROR } from "../common/msg.error";
 
 class UserRepository {
   async create(newData: UserType) {
@@ -10,7 +10,7 @@ class UserRepository {
     } catch (error: any) {
       if (error.status === 500) {
         throw new DatabaseConnectionError(
-          MSG_MODEL_ERROR.DatabaseConnectionException,
+          MSG_ERROR.DatabaseConnectionException,
           error
         );
       } else {

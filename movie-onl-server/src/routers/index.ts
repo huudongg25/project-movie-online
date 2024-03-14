@@ -1,11 +1,9 @@
-// Router.js
-
 import { Express } from "express";
 import { BASE_PATH } from "./authenEndpoint";
-import authController from "../controllers/auth.controller";
+import authRouter from "./auth.router";
 
 const Router = (server: Express) => {
-  server.use(BASE_PATH, authController);
+  server.use(BASE_PATH, authRouter);
 };
 
 export default Router;
