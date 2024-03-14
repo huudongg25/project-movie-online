@@ -18,6 +18,25 @@ class UserRepository {
       }
     }
   }
+
+  async findOneByEmail(email: string) {
+    try {
+      return await User.findOne({
+        where: {
+          email,
+        },
+      });
+    } catch (error: any) {
+      if (error.status === 500) {
+        throw new DatabaseConnectionError(
+          MSG_ERROR.DatabaseConnectionException,
+          error
+        );
+      } else {
+        throw error;
+      }
+    }
+  }
 }
 
 export default UserRepository;

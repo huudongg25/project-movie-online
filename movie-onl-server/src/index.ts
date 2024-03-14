@@ -12,6 +12,7 @@ import { Server } from "socket.io"; //config file .env
 import createTable from "./entities/index.entity";
 import sequelize from "./configs/db.config";
 import Router from "./routers";
+import handleError from "./middlewares/handleError.middleware";
 dotenv.config();
 //create server with express
 const server = express();
@@ -71,6 +72,9 @@ const io = new Server(app, {
 // });
 // });
 //
+
+server.use(handleError);
+
 //connect client
 server.use(
   cors({

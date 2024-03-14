@@ -14,5 +14,14 @@ class UserService {
       throw error;
     }
   }
+
+  async findOneByEmail(email: string): Promise<UserType> {
+    try {
+      const result = await this.userRepository.findOneByEmail(email);
+      return result?.dataValues;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 export default UserService;

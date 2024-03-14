@@ -18,3 +18,6 @@ export const MSG_ERROR = {
   ServiceUnavailableException: "Dịch vụ không khả dụng",
   GatewayTimeoutException: "Gateway timeout",
 };
+export const MSG_VALIDATION = {
+  UnauthorizedException: "Email hoặc mật khẩu không đúng",
+};

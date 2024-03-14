@@ -18,7 +18,7 @@ const findEmail = async (req: Request, res: any, next: NextFunction) => {
     }
     next();
   } catch (error) {
-    return res
+    throw res
       .status(500)
       .json({ error: "Đã xảy ra lỗi trong quá trình xử lý yêu cầu" });
   }

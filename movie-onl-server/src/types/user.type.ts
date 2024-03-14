@@ -1,6 +1,6 @@
 export interface UserType {
   id?: number;
-  email?: string;
+  email: string;
   password?: string;
   address?: string;
   birthDay?: string;
@@ -8,4 +8,9 @@ export interface UserType {
   status?: number;
   createdAt?: string;
   updatedAt?: string;
+}
+
+export interface ResponseLogin {
+  data?: UserType;
+  accessToken?: string;
 }
