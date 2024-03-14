@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { body, validationResult } from "express-validator";
 
-const VALIDATE_INPUT_REGISTER = async (
+const validateInputRegister = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -24,4 +24,4 @@ const VALIDATE_INPUT_REGISTER = async (
   next();
 };
 
-export default VALIDATE_INPUT_REGISTER;
+export default validateInputRegister;
