@@ -1,9 +1,19 @@
-import React from 'react'
+import React from "react";
 
-const DefaultLayout = () => {
-  return (
-    <div>DefaultLayout</div>
-  )
+import "./DefaultLayout.css";
+import SideBar from "../../components/SideBar/SideBar";
+
+interface Props {
+  child: JSX.Element;
 }
-
-export default DefaultLayout
+const DefaultLayout = (props: Props): JSX.Element => {
+  return (
+    <div className="wrapper-layout">
+      <div className="sidebar-layout">
+        <SideBar></SideBar>
+      </div>
+      <div className="content-layout">{props.child}</div>
+    </div>
+  );
+};
+export default DefaultLayout;
