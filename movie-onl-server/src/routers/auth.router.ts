@@ -14,11 +14,5 @@ authRouter.post(
   authController.register
 );
 
-authRouter.post(
-  ENDPOINT.LOGIN,
-  validateInput,
-  authLogin,
-  findEmail,
-  authController.login
-);
+authRouter.post(ENDPOINT.LOGIN, validateInput, findEmail, authController.login);
 export default authRouter;
