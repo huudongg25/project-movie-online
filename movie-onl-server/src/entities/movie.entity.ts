@@ -37,7 +37,7 @@ const Movie = sequelize.define(
       allowNull: false,
     },
     describe: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(500),
       allowNull: false,
     },
     video: {

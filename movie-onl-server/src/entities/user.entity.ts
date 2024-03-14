@@ -13,6 +13,7 @@ const User = sequelize.define(
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
     password: {
       type: DataTypes.STRING,
@@ -21,6 +22,8 @@ const User = sequelize.define(
     avatar: {
       type: DataTypes.STRING,
       allowNull: false,
+      defaultValue:
+        "https://w7.pngwing.com/pngs/1004/160/png-transparent-computer-icons-user-profile-social-web-others-blue-social-media-desktop-wallpaper-thumbnail.png",
     },
     birthDay: {
       type: DataTypes.DATE,
@@ -38,6 +41,7 @@ const User = sequelize.define(
     status: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: 1,
     },
   },
   {

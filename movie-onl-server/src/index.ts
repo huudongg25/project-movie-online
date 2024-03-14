@@ -11,6 +11,7 @@ import http from "http";
 import { Server } from "socket.io"; //config file .env
 import createTable from "./entities/index.entity";
 import sequelize from "./configs/db.config";
+import Router from "./routers";
 dotenv.config();
 //create server with express
 const server = express();
@@ -79,7 +80,7 @@ server.use(
   })
 );
 //route on url
-// Router(server);
+Router(server);
 //create entity table db
 createTable();
 //address server

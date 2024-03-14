@@ -1,0 +1,23 @@
+import User from "../entities/user.entity";
+import { UserType } from "../types/user.type";
+import { DatabaseConnectionError } from "../exception/index.exception";
+import { MSG_MODEL_ERROR } from "../common/msg.error";
+
+class UserRepository {
+  async create(newData: UserType) {
+    try {
+      return await User.create({ ...newData });
+    } catch (error: any) {
+      if (error.status === 500) {
+        throw new DatabaseConnectionError(
+          MSG_MODEL_ERROR.DatabaseConnectionException,
+          error
+        );
+      } else {
+        throw error;
+      }
+    }
+  }
+}
+
+export default UserRepository;
