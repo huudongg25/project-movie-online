@@ -7,7 +7,7 @@ declare module "express-serve-static-core" {
     emailExist?: boolean;
   }
 }
-const FIND_EMAIL = async (req: Request, res: any, next: NextFunction) => {
+const findEmail = async (req: Request, res: any, next: NextFunction) => {
   try {
     const { email }: any = req.body;
     const existingUser = await User.findOne({ where: { email } });
@@ -24,4 +24,4 @@ const FIND_EMAIL = async (req: Request, res: any, next: NextFunction) => {
   }
 };
 
-export default FIND_EMAIL;
+export default findEmail;
