@@ -68,8 +68,5 @@ const Card: React.FC<CardProps> = ({ link, icon, name, count }) => (
   </div>
 );
 
-<<<<<<< HEAD
 export default Dashboard;
-=======
-export default Dashboard;
->>>>>>> 0bac1b2815a5c3d63c58099e558aa9e3f3e2003f
+
