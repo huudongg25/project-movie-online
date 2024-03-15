@@ -9,7 +9,11 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
+<<<<<<< HEAD
 import "./Movies.css";
+=======
+import './Movies.css'
+>>>>>>> 0bac1b2815a5c3d63c58099e558aa9e3f3e2003f
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {

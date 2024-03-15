@@ -1,4 +1,5 @@
 ul li a {
+<<<<<<< HEAD
   text-decoration: none;
   color: black;
   width: 100%;
@@ -59,3 +60,65 @@ ul li a {
     justify-content: center;
     margin: 10px;
 }
+=======
+    text-decoration: none;
+    color: black;
+    width: 100%;
+  }
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin: 10px 0;
+  }
+  
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 300px;
+    background-color: #F3F3F3;
+  }
+  
+  .sidebar ul {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+  }
+  
+  .sidebar ul .list-item {
+    cursor: pointer;
+    font-weight: 600;
+    color: #c4bcbcc5;
+    list-style: none;
+    padding: 10px;
+    width: 100%;
+  }
+  
+  .sidebar ul .list-item:hover {
+    background-color: #FE4971;
+    border-radius: 16px;
+  }
+  
+  .list-item.active {
+    background-color: #FE4971;
+    border-radius: 16px;
+  }
+  .logout-btn {
+    margin: 40vh 40px;
+  }
+  .logo-admin img{
+      width: 200px;
+      height: 100px;
+  }
+  .logo-admin{
+  
+      display: flex;
+      justify-content: center;
+      margin: 10px;
+  }
+>>>>>>> 0bac1b2815a5c3d63c58099e558aa9e3f3e2003f
