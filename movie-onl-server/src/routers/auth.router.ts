@@ -1,11 +1,12 @@
 import express from "express";
 import { ENDPOINT } from "./authenEndpoint";
 import findEmail from "../middlewares/findEmail.middleware";
-import authController from "../controllers/auth.controller";
 import validateInput from "../middlewares/validate";
-import authLogin from "../middlewares/auth.middleware";
+import AuthController from "../controllers/auth.controller";
 
 const authRouter = express.Router();
+
+const authController = new AuthController();
 
 authRouter.post(
   ENDPOINT.REGISTER,

@@ -3,10 +3,14 @@ import {
   AuthencationException,
   ValidationException,
 } from "../exception/index.exception";
+import { HttpStatus, MSG_ERROR } from "../common/msg.error";
 
-const handleError = (err: Error, res: Response, next: NextFunction) => {
-  console.error("Error occurred:", err);
-
+const handleError = (
+  err: Error,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   if (!err) {
     return next();
   }
@@ -21,8 +25,8 @@ const handleError = (err: Error, res: Response, next: NextFunction) => {
     });
   }
 
-  return res.status(500).json({
-    message: "Internal Server Error",
+  return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+    message: err.message,
   });
 };
 

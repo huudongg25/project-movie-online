@@ -1,64 +1,51 @@
 import { NextFunction, Request, Response } from "express";
 import AuthService from "../services/auth.service";
-import bcrypt from "bcryptjs";
-import { MSG_VALIDATION } from "../common/msg.error";
+import { HttpStatus, MSG_ERROR, MSG_VALIDATION } from "../common/msg.error";
+import {
+  BadRequestException,
+  ValidationException,
+} from "../exception/index.exception";
 
-const authServices = new AuthService();
+class AuthController {
+  private authServices: AuthService;
+  constructor() {
+    this.authServices = new AuthService();
+  }
+  async register(req: Request, res: Response, next: NextFunction) {
+    try {
+      if (req?.emailExist === true) {
+        throw new BadRequestException(
+          MSG_ERROR.EMAIL_ERROR,
+          HttpStatus.BAD_REQUEST
+        );
+      }
 
-const register = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    if (req?.emailExist === true) {
-      return res.status(400).json({
-        error: "Bad Request",
-        message: "Invalid input data. Please provide valid email and password.",
+      const { status, ...result } = await this.authServices.register({
+        ...req.body,
       });
+      res.status(status as number).json(result);
+    } catch (error) {
+      next(error);
     }
-
-    const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(req.body.password, salt);
-
-    const newDataUser = {
-      email: req.body.email,
-      password: hash,
-      address: req.body.address,
-      birthDay: req.body.birthDay,
-    };
-
-    const createUser = await authServices.register(newDataUser);
-    if (createUser) {
-      return res
-        .status(201)
-        .json({ success: true, message: "Account created successfully." });
-    }
-
-    throw res
-      .status(401)
-      .json({ success: false, message: "Account Fail Create." });
-  } catch (error) {
-    next(error);
   }
-};
 
-const login = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    if (req?.emailExist === true) {
-      const dataUser = {
-        email: req?.body?.email,
-        password: req?.body?.password,
-      };
-
-      const result = await authServices.login(dataUser);
-
-      return res.status(200).json(result);
+  async login(req: Request, res: Response, next: NextFunction) {
+    try {
+      if (req?.emailExist === true) {
+        const { status, ...result } = await this.authServices.login({
+          ...req.body,
+        });
+        res.status(status as number).json(result);
+      } else {
+        throw new ValidationException(
+          MSG_VALIDATION.UNAUTHORZIED_EXCEPTION,
+          HttpStatus.BAD_REQUEST
+        );
+      }
+    } catch (error) {
+      next(error);
     }
-
-    throw res.status(401).json(MSG_VALIDATION.UnauthorizedException);
-  } catch (error) {
-    next(error);
   }
-};
+}
 
-export default {
-  register,
-  login,
-};
+export default AuthController;
