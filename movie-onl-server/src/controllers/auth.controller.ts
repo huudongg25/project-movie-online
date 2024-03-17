@@ -1,52 +1,51 @@
-import express, { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import AuthService from "../services/auth.service";
-import { ENDPOINT } from "../routers/authenEndpoint";
-import bcrypt from "bcryptjs";
-import FIND_EMAIL from "../middlewares/findEmail.middleware";
-import VALIDATE_INPUT_REGISTER from "../middlewares/validateRegister";
+import { HttpStatus, MSG_ERROR, MSG_VALIDATION } from "../common/msg.error";
+import {
+  BadRequestException,
+  ValidationException,
+} from "../exception/index.exception";
 
-const authController = express.Router();
-const authServices = new AuthService();
-
-authController.post(
-  ENDPOINT.REGISTER,
-  VALIDATE_INPUT_REGISTER,
-  FIND_EMAIL,
-  async (req: Request, res: Response) => {
+class AuthController {
+  private authServices: AuthService;
+  constructor() {
+    this.authServices = new AuthService();
+  }
+  async register(req: Request, res: Response, next: NextFunction) {
     try {
       if (req?.emailExist === true) {
-        return res.status(400).json({
-          error: "Bad Request",
-          message:
-            "Invalid input data. Please provide valid email and password.",
-        });
+        throw new BadRequestException(
+          MSG_ERROR.EMAIL_ERROR,
+          HttpStatus.BAD_REQUEST
+        );
       }
 
-      const salt = await bcrypt.genSalt(10);
-      const hash = await bcrypt.hash(req.body.password, salt);
-
-      const newDataUser = {
-        email: req.body.email,
-        password: hash,
-        address: req.body.address,
-        birthDay: req.body.birthDay,
-      };
-
-      const createUser = await authServices.register(newDataUser);
-      if (createUser) {
-        return res
-          .status(201)
-          .json({ success: true, message: "Account created successfully." });
-      }
-      return res
-        .status(401)
-        .json({ success: false, message: "Account Fail Create." });
+      const { status, ...result } = await this.authServices.register({
+        ...req.body,
+      });
+      res.status(status as number).json(result);
     } catch (error) {
-      return res
-        .status(500)
-        .json({ error: "Đã xảy ra lỗi trong quá trình xử lý yêu cầu" });
+      next(error);
     }
   }
-);
 
-export default authController;
+  async login(req: Request, res: Response, next: NextFunction) {
+    try {
+      if (req?.emailExist === true) {
+        const { status, ...result } = await this.authServices.login({
+          ...req.body,
+        });
+        res.status(status as number).json(result);
+      } else {
+        throw new ValidationException(
+          MSG_VALIDATION.UNAUTHORZIED_EXCEPTION,
+          HttpStatus.BAD_REQUEST
+        );
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+}
+
+export default AuthController;

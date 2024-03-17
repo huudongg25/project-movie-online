@@ -1,17 +1,16 @@
 import express, { urlencoded } from "express";
 import cors from "cors";
-// import Router from "./router";
 import bodyParser from "body-parser";
-// import createTable from "./entities";
 import * as dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import path from "path";
 import http from "http";
-import { Server } from "socket.io"; //config file .env
+import { Server } from "socket.io";
 import createTable from "./entities/index.entity";
 import sequelize from "./configs/db.config";
 import Router from "./routers";
+import handleError from "./middlewares/handleError.middleware";
 dotenv.config();
 //create server with express
 const server = express();
@@ -26,8 +25,6 @@ server.use(
     cookie: { secure: false },
   })
 );
-// file tĩnh
-server.use(express.static("public"));
 // ejs
 server.set("view engine", "ejs");
 server.set("views", path.join(__dirname, "views"));
@@ -46,7 +43,6 @@ const io = new Server(app, {
     origin: "http://localhost:3000",
   },
 });
-
 // io.on("connection", (socket: Socket) => {
 //   console.log(socket.id);
 //   socket.on("blockUser", (userId: any) => {
@@ -81,6 +77,8 @@ server.use(
 );
 //route on url
 Router(server);
+//err
+server.use(handleError);
 //create entity table db
 createTable();
 //address server

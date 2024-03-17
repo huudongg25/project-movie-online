@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { body, validationResult } from "express-validator";
+import { BadRequestException } from "../exception/index.exception";
+import { MSG_VALIDATION } from "../common/msg.error";
 
-const VALIDATE_INPUT_REGISTER = async (
+const validateInput = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -16,12 +18,9 @@ const VALIDATE_INPUT_REGISTER = async (
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({
-      error: "Bad Request",
-      message: "Invalid input data. Please provide valid email and password.",
-    });
+    return new BadRequestException(MSG_VALIDATION.UNAUTHORZIED_EXCEPTION, 401);
   }
   next();
 };
 
-export default VALIDATE_INPUT_REGISTER;
+export default validateInput;
