@@ -8,6 +8,7 @@ import Container from "../../components/Container/Container";
 import ImageHeader from "../../components/ImageHeader/ImageHeader";
 import CastSlide from "../../components/CastSlide/CastSlide";
 import MovieSlide from "../../components/MovieSlide/MovieSlide";
+import MovieReview from "../../components/MovieReview/MovieReview";
 
 const MovieDetail = () => {
   return (
@@ -106,6 +107,8 @@ const MovieDetail = () => {
           </Container>
         </div>
       </Box>
+      {/* media reviews */}
+      <MovieReview />
     </>
   );
 };
