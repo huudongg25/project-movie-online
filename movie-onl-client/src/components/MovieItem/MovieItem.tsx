@@ -71,7 +71,7 @@ const MovieItem = () => {
             >
               <Stack spacing={{ xs: 1, md: 2 }}>
                 <CircularRate />
-                <Typography></Typography>
+                <Typography>fff</Typography>
                 <Typography
                   variant="body1"
                   fontWeight="700"
@@ -93,7 +93,7 @@ const MovieItem = () => {
               backgroundColor: "rgba(0,0,0,0.6)",
             }}
           >
-            <Typography></Typography>
+            <Typography>gggggg</Typography>
           </Box>
         </Box>
       </Link>

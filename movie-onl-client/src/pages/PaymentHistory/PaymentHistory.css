@@ -1,0 +1,29 @@
+.section-history {
+  padding: 20px 0;
+}
+table {
+  width: 100%;
+}
+table th {
+  /* color: #fff; */
+  font-weight: 700;
+}
+table td {
+  /* color: #fff; */
+  font-weight: 400;
+}
+thead th {
+  justify-content: center;
+}
+tbody td {
+  justify-content: center;
+}
+table thead tr th {
+  text-align: center !important;
+}
+table tbody tr td {
+  text-align: center !important;
+}
+.img-history-not-found {
+  mix-blend-mode: multiply;
+}
