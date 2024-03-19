@@ -1,32 +1,76 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CircularRate from "../CircularRate/CircularRate";
-const MovieItem = () => {
+import { MovieItemProps } from "../../types/type";
+import tmdbConfigs from "../../configs/tmdb.config";
+import { useSelector } from "react-redux";
+import uiConfigs from "./../../configs/UI.config";
+import favoriteUtils from "../../utils/Favorite.util";
+import { routesPath } from "../../routes/Public.router";
+const MovieItem: React.FC<MovieItemProps> = ({ media, mediaType }) => {
+  const { listFavorites } = useSelector((state: any) => state.user);
+
+  const [title, setTitle] = useState<string>("");
+  const [posterPath, setPosterPath] = useState<string>("");
+  const [releaseDate, setReleaseDate] = useState<string | null>(null);
+  const [rate, setRate] = useState<number | null>(null);
+
+  useEffect(() => {
+    setTitle(media.title || media.name || media.mediaTitle);
+
+    setPosterPath(
+      tmdbConfigs.posterPath(
+        media.poster_path ||
+          media.backdrop_path ||
+          media.mediaPoster ||
+          media.profile_path
+      )
+    );
+
+    if (mediaType === tmdbConfigs.mediaType.movie) {
+      setReleaseDate(media.release_date && media.release_date.split("-")[0]);
+    } else {
+      setReleaseDate(
+        media.first_air_date && media.first_air_date.split("-")[0]
+      );
+    }
+
+    setRate(media.vote_average || media.mediaRate);
+  }, [media, mediaType]);
   return (
-    <div>
-      <Link to="#">
-        <Box
-          sx={{
-            paddingTop: "160%",
-            "&:hover .media-info": { opacity: 1, bottom: 0 },
-            "&:hover .media-back-drop, &:hover .media-play-btn": { opacity: 1 },
-            color: "primary.contrastText",
-          }}
-        >
-          {/* movie item */}
+    <Link
+      to={
+        mediaType !== "people"
+          ? routesPath.mediaDetail(mediaType, media.mediaId || media.id)
+          : routesPath.person(media.id)
+      }
+    >
+      <Box
+        sx={{
+          ...uiConfigs.style.backgroundImage(posterPath),
+          paddingTop: "160%",
+          "&:hover .media-info": { opacity: 1, bottom: 0 },
+          "&:hover .media-back-drop, &:hover .media-play-btn": { opacity: 1 },
+          color: "primary.contrastText",
+        }}
+      >
+        {/* movie item */}
+        {mediaType !== "people" && (
           <>
-            <FavoriteIcon
-              color="primary"
-              sx={{
-                position: "absolute",
-                top: 2,
-                right: 2,
-                fontSize: "2rem",
-              }}
-            />
+            {favoriteUtils.check({ listFavorites, mediaId: media.id }) && (
+              <FavoriteIcon
+                color="primary"
+                sx={{
+                  position: "absolute",
+                  top: 2,
+                  right: 2,
+                  fontSize: "2rem",
+                }}
+              />
+            )}
             <Box
               className="media-back-drop"
               sx={{
@@ -70,19 +114,26 @@ const MovieItem = () => {
               }}
             >
               <Stack spacing={{ xs: 1, md: 2 }}>
-                <CircularRate />
-                <Typography></Typography>
+                {rate && <CircularRate value={rate} />}
+
+                <Typography>{releaseDate}</Typography>
+
                 <Typography
                   variant="body1"
                   fontWeight="700"
                   sx={{
                     fontSize: "1rem",
+                    ...uiConfigs.style.typoLines(1, "left"),
                   }}
-                ></Typography>
+                >
+                  {title}
+                </Typography>
               </Stack>
             </Box>
           </>
-          {/* movie item */}
+        )}
+        {/* people */}
+        {mediaType === "people" && (
           <Box
             sx={{
               position: "absolute",
@@ -93,11 +144,14 @@ const MovieItem = () => {
               backgroundColor: "rgba(0,0,0,0.6)",
             }}
           >
-            <Typography></Typography>
+            <Typography sx={{ ...uiConfigs.style.typoLines(1, "left") }}>
+              {media.name}
+            </Typography>
           </Box>
-        </Box>
-      </Link>
-    </div>
+        )}
+        {/* people */}
+      </Box>
+    </Link>
   );
 };
 

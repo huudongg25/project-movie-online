@@ -12,6 +12,8 @@ const Dashboard: React.FC = () => {
   return (
     <section className="content active">
       <ToastContainer></ToastContainer>
+      <h2>Dashboard</h2>
+      <hr style={{ margin: "20px 0" }} />
       <div className="dashboard-content">
         <div className="cardBox">
           <Card
@@ -21,7 +23,7 @@ const Dashboard: React.FC = () => {
             count={10}
           />
           <Card
-            link="/products"
+            link="/movies"
             icon={<MdMovie className="dashboard-icon" />}
             name="Movies"
             count={20}
@@ -41,7 +43,7 @@ const Dashboard: React.FC = () => {
           { data: [15, 25, 30, 50] },
           { data: [60, 50, 15, 25] },
         ]}
-        height={290}
+        height={360}
         xAxis={[{ data: ["Q1", "Q2", "Q3", "Q4"], scaleType: "band" }]}
         margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
       />

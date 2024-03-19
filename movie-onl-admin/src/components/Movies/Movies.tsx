@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+import "./Movies.css";
+import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,13 +9,16 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Link } from "react-router-dom";
-import { Button } from "@mui/material";
-<<<<<<< HEAD
 import "./Movies.css";
-=======
-import './Movies.css'
->>>>>>> 0bac1b2815a5c3d63c58099e558aa9e3f3e2003f
+import { Button, TablePagination } from "@mui/material";
+
+interface Movie {
+  name: string;
+  category: string;
+  image: string;
+  views: number;
+  releaseDate: string;
+}
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -34,7 +39,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const rows = [
+const rows: Movie[] = [
   {
     name: "Frozen yoghurt",
     category: "Category A",
@@ -70,16 +75,47 @@ const rows = [
     views: 5000,
     releaseDate: "05/05/2022",
   },
+  {
+    name: "Gingerbread",
+    category: "Category A",
+    image: "image_url",
+    views: 5000,
+    releaseDate: "05/05/2022",
+  },
 ];
 
-const Movies = () => {
+const Movies: React.FC = () => {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const slicedRows = rows.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
+
   return (
     <div className="content">
       <h2>Movies Management</h2>
       <hr style={{ margin: "20px 0" }} />
-      <Button className="add-movie" variant="outlined" color="inherit">
-        Thêm phim mới
-      </Button>
+      <Link to="/create-movie">
+        <Button className="add-movie" variant="outlined" color="inherit">
+          Thêm phim mới
+        </Button>
+      </Link>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
@@ -94,19 +130,21 @@ const Movies = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row, index) => (
-              <StyledTableRow key={row.name}>
+            {slicedRows.map((row, index) => (
+              <StyledTableRow key={index}>
                 <StyledTableCell component="th" scope="row">
-                  {index + 1}
+                  {index + 1 + page * rowsPerPage}
                 </StyledTableCell>
                 <StyledTableCell>{row.name}</StyledTableCell>
                 <StyledTableCell>{row.category}</StyledTableCell>
                 <StyledTableCell>{row.image}</StyledTableCell>
                 <StyledTableCell>{row.views}</StyledTableCell>
                 <StyledTableCell>{row.releaseDate}</StyledTableCell>
-                <StyledTableCell>
-                  <Button variant="contained">Sửa</Button>
-                  <Button variant="contained" color="error">
+                <StyledTableCell className="action-button">
+                  <Button size="small" variant="contained">
+                    Sửa
+                  </Button>
+                  <Button size="small" variant="contained" color="error">
                     Xóa
                   </Button>
                 </StyledTableCell>
@@ -115,6 +153,15 @@ const Movies = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={rows.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </div>
   );
 };
