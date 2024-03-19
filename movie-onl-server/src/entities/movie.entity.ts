@@ -51,6 +51,7 @@ const Movie = sequelize.define(
     averageRating: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: 0,
     },
     datePublication: {
       type: DataTypes.STRING,
@@ -63,6 +64,7 @@ const Movie = sequelize.define(
     status: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: 1,
     },
   },
   {

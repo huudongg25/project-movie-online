@@ -32,4 +32,6 @@ userRouter.patch(ENDPOINT.UPDATE_PROFILE, userController.updateProfile);
 
 userRouter.patch(ENDPOINT.UPDATE_STATUS, userController.changeStatus);
 
+userRouter.patch(ENDPOINT.UPDATE_PRICE, userController.addMoney);
+
 export default userRouter;

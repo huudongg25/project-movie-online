@@ -37,8 +37,6 @@ class CategoryRepository {
     try {
       return await Category.update(newData, { where: { id } });
     } catch (error) {
-      console.log(error);
-
       throw new DatabaseConnectionError(MSG_ERROR.DATA_UNCONNECTION_EXCEPTION);
     }
   }

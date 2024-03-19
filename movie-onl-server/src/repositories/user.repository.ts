@@ -1,14 +1,12 @@
 import User from "../entities/user.entity";
 import { UserType } from "../types/user.type";
 import { DatabaseConnectionError } from "../exception/index.exception";
-import { FindOptions, Op } from "sequelize";
+import { FindOptions, Op, Transaction } from "sequelize";
 import { MSG_ERROR } from "../common/msg.error";
 
 class UserRepository {
   async findAll(sort: string, limit: number, offset: number, search: string) {
     try {
-      console.log(sort);
-
       return await User.findAll({
         order: [["id", sort]],
         limit,
@@ -60,8 +58,11 @@ class UserRepository {
     }
   }
 
-  async update(id: number, newData: UserType) {
+  async update(id: number, newData: UserType, transaction?: Transaction) {
     try {
+      if (transaction) {
+        return await User.update(newData, { where: { id }, transaction });
+      }
       return await User.update(newData, { where: { id } });
     } catch (error) {
       throw new DatabaseConnectionError(MSG_ERROR.DATA_UNCONNECTION_EXCEPTION);

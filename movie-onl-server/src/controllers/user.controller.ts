@@ -3,19 +3,16 @@ import UserService from "../services/user.service";
 import { UnauthorizedException } from "../exception/index.exception";
 import { HttpStatus, MSG_ERROR, MSG_SUCCESS } from "../common/msg.error";
 
-class UserController {
-  private userServices: UserService;
-  constructor() {
-    this.userServices = new UserService();
-  }
+const userServices = new UserService();
 
+class UserController {
   async findAllUser(req: Request, res: Response, next: NextFunction) {
     try {
       const sort = req.query.sort || "ASC";
-      const limit = req.query.limit || 3;
+      const limit = Number(req.query.limit) || 3;
       const page = req.query.page || 1;
       const search = req.query.search || "";
-      const { status, ...result } = await this.userServices.findAll(
+      const { status, ...result } = await userServices.findAll(
         sort as string,
         limit as number,
         page as number,
@@ -32,7 +29,7 @@ class UserController {
   async findOneUser(req: Request, res: Response, next: NextFunction) {
     try {
       const id = Number(req.params.id);
-      const { status, ...result } = await this.userServices.findOneById(id);
+      const { status, ...result } = await userServices.findOneById(id);
       res.status(status as number).json(result);
     } catch (error) {
       next(error);
@@ -42,7 +39,7 @@ class UserController {
   async forgotPassword(req: Request, res: Response, next: NextFunction) {
     try {
       if (req.emailExist === true) {
-        const result = await this.userServices.forgotPassword(req.body.email);
+        const result = await userServices.forgotPassword(req.body.email);
         if (result?.sendMailToUser) {
           res.cookie("otp", result?.dataCookie, {
             expires: new Date(Date.now() + 120000),
@@ -62,7 +59,7 @@ class UserController {
 
   async checkPin(req: Request, res: Response, next: NextFunction) {
     try {
-      const compareDataUser = await this.userServices.checkPin(
+      const compareDataUser = await userServices.checkPin(
         req.body.pin,
         req.cookies.otp?.hash_data
       );
@@ -103,7 +100,7 @@ class UserController {
     try {
       const compareDataUser = req.cookies?.pin?.status;
       if (compareDataUser) {
-        const { status, ...result } = await this.userServices.resetPassword(
+        const { status, ...result } = await userServices.resetPassword(
           req.body?.password,
           req.cookies?.otp?.email
         );
@@ -124,10 +121,7 @@ class UserController {
 
       const avatar = req.file?.path as string;
 
-      const { status, ...result } = await this.userServices.update(
-        { avatar },
-        id
-      );
+      const { status, ...result } = await userServices.update({ avatar }, id);
       res.status(status as number).json(result);
     } catch (error) {
       next(error);
@@ -138,7 +132,7 @@ class UserController {
     try {
       const id = Number(req.params.id);
 
-      const { status, ...result } = await this.userServices.update(
+      const { status, ...result } = await userServices.update(
         { ...req.body },
         id
       );
@@ -151,7 +145,7 @@ class UserController {
   async changeStatus(req: Request, res: Response, next: NextFunction) {
     try {
       const id = Number(req.params.id);
-      const { status, ...result } = await this.userServices.update(
+      const { status, ...result } = await userServices.update(
         { status: req.body.status },
         id
       );
@@ -161,14 +155,18 @@ class UserController {
     }
   }
 
-  // async addMoney(req: Request, res: Response, next: NextFunction) {
-  //   try {
-  //     const id = Number(req.params.id);
-  //     const result = await this.userServices.addMoney({ ...req.body }, id);
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // }
+  async addMoney(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = Number(req.params.id);
+      const { status, ...result } = await userServices.addMoney(
+        { ...req.body },
+        id
+      );
+      res.status(status).json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default UserController;

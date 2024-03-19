@@ -14,10 +14,12 @@ export const MSG_ERROR = {
   NOT_ALOW_EXCEPTION: "Phương thức không được phép",
   CONFLICT_EXCEPTION: "Xung đột khi xử lý yêu cầu",
   UNVALIABAL_EXCEPTION: "Dịch vụ không khả dụng",
-  PAYMENT_REQUEIR_EXCEPTION: "Yêu cầu thanh toán",
+  PAYMENT_REQUEIR_EXCEPTION:
+    "Yêu cầu thanh toán không hợp lệ hoặc số dư không đủ",
   SERVICE_UNVALIABALEXCEPTION: "Dịch vụ không khả dụng",
   GATE_WAY_TIME_OUT_EXCEPTION: "Gateway timeout",
   EMAIL_ERROR: "Email đã tồn tại",
+  BAD_GET: "No content",
 };
 export const MSG_VALIDATION = {
   UNAUTHORZIED_EXCEPTION: "Email hoặc mật khẩu không đúng",
