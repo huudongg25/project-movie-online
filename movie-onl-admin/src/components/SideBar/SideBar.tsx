@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaUserCog } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
-import { CiBoxList } from "react-icons/ci";
-import { CiMoneyBill } from "react-icons/ci";
+import { MdMovie } from "react-icons/md";
 import "./SideBar.css";
 import Button from "@mui/material/Button";
+import { FaBagShopping } from "react-icons/fa6";
 
 const SideBar: React.FC = () => {
   const location = useLocation();
@@ -33,7 +33,7 @@ const SideBar: React.FC = () => {
           >
             <Link className="sidebar-link" to="/dashboard">
               <MdDashboard />
-              Dashboard
+              Trang chủ
             </Link>
           </li>
           <li
@@ -43,18 +43,18 @@ const SideBar: React.FC = () => {
             onClick={() => handleTabClick("users")}
           >
             <Link className="sidebar-link" to="/users">
-              <FaUserCog /> Users Management
+              <FaUserCog /> Quản lí người dùng
             </Link>
           </li>
           <li
             className={`list-item ${
-              location.pathname === "/products" ? "active" : ""
+              location.pathname === "/movies" ? "active" : ""
             }`}
-            onClick={() => handleTabClick("products")}
+            onClick={() => handleTabClick("movies")}
           >
             <Link className="sidebar-link" to="/movies">
-              <CiBoxList />
-              Movies Management
+              <MdMovie />
+              Quản lí phim
             </Link>
           </li>
           <li
@@ -65,8 +65,8 @@ const SideBar: React.FC = () => {
           >
             <Link className="sidebar-link" to="/orders">
               {" "}
-              <CiMoneyBill />
-              Orders Management
+              <FaBagShopping />
+              Quản lí đơn hàng
             </Link>
           </li>
 

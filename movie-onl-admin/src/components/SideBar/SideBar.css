@@ -18,6 +18,7 @@ ul li a {
     bottom: 0;
     width: 300px;
     background-color: #F3F3F3;
+    margin-right: 20px;
   }
   
   .sidebar ul {
@@ -26,6 +27,7 @@ ul li a {
     flex-direction: column;
     gap: 5px;
     width: 100%;
+    padding: 0 10px;  
   }
   
   .sidebar ul .list-item {
@@ -47,7 +49,7 @@ ul li a {
     border-radius: 16px;
   }
   .logout-btn {
-    margin: 40vh 40px;
+    margin: 35vh 40px;
   }
   .logo-admin img{
       width: 200px;

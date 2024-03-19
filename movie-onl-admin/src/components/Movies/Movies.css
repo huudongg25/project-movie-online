@@ -1,3 +1,7 @@
 .add-movie{
     margin: 20px;
 }
+.action-button{
+    display: flex;
+    gap: 6px;
+}
