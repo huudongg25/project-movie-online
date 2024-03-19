@@ -2,29 +2,36 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
-const CastSlide = () => {
+import { CastSlideProps } from "../../types/type";
+import uiConfigs from "./../../configs/UI.config";
+import tmdbConfigs from "../../configs/tmdb.config";
+import { routesPath } from "../../routes/Public.router";
+const CastSlide: React.FC<CastSlideProps> = ({ casts }) => {
   return (
-    <>
-      <Box
-        sx={{
-          "& .swiper-slide": {
-            width: { xs: "50%", md: "25%", lg: "20.5%" },
-            color: "primary.contrastText",
-          },
-        }}
+    <Box
+      sx={{
+        "& .swiper-slide": {
+          width: { xs: "50%", md: "25%", lg: "20.5%" },
+          color: "primary.contrastText",
+        },
+      }}
+    >
+      <Swiper
+        spaceBetween={10}
+        slidesPerView={"auto"}
+        grabCursor={true}
+        style={{ width: "100%", height: "max-content" }}
       >
-        <Swiper
-          spaceBetween={10}
-          slidesPerView={"auto"}
-          grabCursor={true}
-          style={{ width: "100%", height: "max-content" }}
-        >
-          <SwiperSlide>
-            <Link to="#">
+        {casts.map((cast, index) => (
+          <SwiperSlide key={index}>
+            <Link to={routesPath.person(cast.id)}>
               <Box
                 sx={{
                   paddingTop: "120%",
                   color: "text.primary",
+                  ...uiConfigs.style.backgroundImage(
+                    tmdbConfigs.posterPath(cast.profile_path)
+                  ),
                 }}
               >
                 <Box
@@ -37,14 +44,16 @@ const CastSlide = () => {
                     backgroundColor: "rgba(0,0,0,0.6)",
                   }}
                 >
-                  <Typography>Cast name</Typography>
+                  <Typography sx={{ ...uiConfigs.style.typoLines(1, "left") }}>
+                    {cast.name}
+                  </Typography>
                 </Box>
               </Box>
             </Link>
           </SwiperSlide>
-        </Swiper>
-      </Box>
-    </>
+        ))}
+      </Swiper>
+    </Box>
   );
 };
 

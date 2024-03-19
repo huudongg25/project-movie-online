@@ -1,6 +1,9 @@
 import React from "react";
-import { Box } from "@mui/material";
-const ImageHeader = () => {
+import { Box, useTheme } from "@mui/material";
+import { ImageHeaderProps } from "../../types/type";
+import uiConfigs from "../../configs/UI.config";
+const ImageHeader: React.FC<ImageHeaderProps> = ({ imgPath }) => {
+  const theme = useTheme();
   return (
     <>
       <Box
@@ -10,7 +13,7 @@ const ImageHeader = () => {
           paddingTop: { xs: "60%", sm: "40%", md: "35%" },
           backgroundPosition: "top",
           backgroundSize: "cover",
-          backgroundImage: `https://sportshub.cbsistatic.com/i/2024/01/23/de248daa-91b2-4951-a70d-2c9af184bb72/kung-fu-panda-4-characters.jpg`,
+          backgroundImage: `url(${imgPath})`,
           backgroundAttachment: "fixed",
           "&::before": {
             content: '""',
@@ -20,6 +23,7 @@ const ImageHeader = () => {
             width: "100%",
             height: "100%",
             pointerEvents: "none",
+            ...uiConfigs.style.gradientBgImage[theme.palette.mode],
           },
         }}
       />

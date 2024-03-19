@@ -1,6 +1,7 @@
 import { Box, Typography, CircularProgress } from "@mui/material";
+import { CircularRateProps } from "../../types/type";
 
-const CircularRate = () => {
+const CircularRate: React.FC<CircularRateProps> = ({ value }) => {
   return (
     <Box
       sx={{
@@ -9,7 +10,12 @@ const CircularRate = () => {
         width: "max-content",
       }}
     >
-      <CircularProgress variant="determinate" color="success" size={50} />
+      <CircularProgress
+        variant="determinate"
+        value={value * 10}
+        color="success"
+        size={50}
+      />
       <Box
         sx={{
           position: "absolute",
@@ -27,7 +33,9 @@ const CircularRate = () => {
           component="div"
           fontWeight="700"
           sx={{ marginTop: "-5px" }}
-        ></Typography>
+        >
+          {Math.floor(value * 10) / 10}
+        </Typography>
       </Box>
     </Box>
   );
