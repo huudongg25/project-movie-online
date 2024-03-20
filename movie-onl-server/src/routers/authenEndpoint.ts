@@ -34,4 +34,13 @@ export const ENDPOINT = {
   WATCH_HISTORY_CREATE: `/watch-histories/create`,
   WATCH_HISTORY_UPDATE: `/watch-histories/update/:id`,
   WATCH_HISTORY_DELETE: `/watch-histories/remove/:id`,
+  //review endpoint
+  REVIEW: `/reviews/:movieId`, //find all
+  REVIEW_CREATE_REVIEW: `/reviews/create-review`, // create review
+  REVIEW_CREATE_COMMENT: `/reviews/create-content`, // create comment
+  REVIEW_UPDATE_RATTING_POINT: `/reviews/ratting-point`, // update ratting-point
+  REVIEW_DETAIL: `/reviews/details/:userId/:movieId`, //find one by user movie
+  // favorite endpoint
+  FAVORITE: `/favorites/:movieId`, //find all by movieId
+  FAVORITE_CREATE: `/favorites/create`, // create
 };
