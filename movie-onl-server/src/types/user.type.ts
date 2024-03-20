@@ -24,3 +24,17 @@ export interface ResponseLogin {
   success?: boolean;
   message?: string;
 }
+
+export interface UserDepositHistoriesType {
+  id?: number;
+  userId: number;
+  email?: string;
+  address?: string;
+  birthDay?: string;
+  avatar?: string;
+  depositedAmount?: number;
+  status?: number;
+  amount?: number;
+  createdAt?: string;
+  updatedAt?: string;
+}

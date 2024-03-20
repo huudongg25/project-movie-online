@@ -11,8 +11,8 @@ class CategoryService {
   async create(newDataCategory: CategoryType): Promise<ResponseCategory> {
     try {
       const newData = {
-        name: newDataCategory?.name,
-        describe: newDataCategory?.describe,
+        name: newDataCategory.name,
+        describe: newDataCategory.describe,
       };
       const result = await this.categoryRepository.create(newData);
       if (result?.dataValues) {
@@ -89,7 +89,7 @@ class CategoryService {
 
   async delete(id: number): Promise<ResponseCategory> {
     try {
-      const result = (await this.categoryRepository.delete(id)) as any;
+      const result = await this.categoryRepository.delete(id);
       if (result !== 0) {
         return {
           status: HttpStatus.OK,
@@ -100,7 +100,7 @@ class CategoryService {
         return {
           status: HttpStatus.NOT_FOUND,
           success: false,
-          message: MSG_SUCCESS.DELETE("DELETE CATEGORY"),
+          message: MSG_ERROR.NOT_FOUND_EXCEPTION,
         };
       }
     } catch (error) {

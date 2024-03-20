@@ -5,12 +5,9 @@ import {
   BadRequestException,
   ValidationException,
 } from "../exception/index.exception";
+const authServices = new AuthService();
 
 class AuthController {
-  private authServices: AuthService;
-  constructor() {
-    this.authServices = new AuthService();
-  }
   async register(req: Request, res: Response, next: NextFunction) {
     try {
       if (req?.emailExist === true) {
@@ -20,7 +17,7 @@ class AuthController {
         );
       }
 
-      const { status, ...result } = await this.authServices.register({
+      const { status, ...result } = await authServices.register({
         ...req.body,
       });
       res.status(status as number).json(result);
@@ -32,7 +29,7 @@ class AuthController {
   async login(req: Request, res: Response, next: NextFunction) {
     try {
       if (req?.emailExist === true) {
-        const { status, ...result } = await this.authServices.login({
+        const { status, ...result } = await authServices.login({
           ...req.body,
         });
         res.status(status as number).json(result);

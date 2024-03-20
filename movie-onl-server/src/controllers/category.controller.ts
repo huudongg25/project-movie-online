@@ -18,7 +18,7 @@ class CategoryController {
   async findAllCategory(req: Request, res: Response, next: NextFunction) {
     try {
       const sort = req.query.sort || "ASC";
-      const limit = req.query.limit || 7;
+      const limit = Number(req.query.limit) || 7;
       const page = req.query.page || 1;
       const search = req.query.search || "";
       const { status, ...result } = await categoryServices.findAll(

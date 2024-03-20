@@ -1,20 +1,24 @@
 import { Random } from "random-js";
 import UserRepository from "../repositories/user.repository";
-import { ResponseService, UserType } from "../types/user.type";
+import {
+  ResponseService,
+  UserDepositHistoriesType,
+  UserType,
+} from "../types/user.type";
 import path from "path";
 import transporter from "../configs/mail.config";
 import ejs from "ejs";
 import bcrypt from "bcryptjs";
 import { HttpStatus, MSG_ERROR, MSG_SUCCESS } from "../common/msg.error";
-import PaidRepository from "../repositories/paid.repository";
 import sequelize from "../configs/db.config";
+import DepositHistoriesRepository from "../repositories/depositHistories.repository";
 
 class UserService {
   private userRepository: UserRepository;
-  private paidRepository: PaidRepository;
+  private depositHistoriesRepository: DepositHistoriesRepository;
   constructor() {
     this.userRepository = new UserRepository();
-    this.paidRepository = new PaidRepository();
+    this.depositHistoriesRepository = new DepositHistoriesRepository();
   }
 
   async findAll(
@@ -169,37 +173,56 @@ class UserService {
     }
   }
 
-  // async addMoney(newData: UserType, id: number) {
-  //   try {
-  //     const dataById = await this.userRepository.findOneById(id);
-  //     const newDataUser = {
-  //       depositedAmount:
-  //         Number(dataById?.dataValues.depositedAmount) +
-  //         Number(newData.depositedAmount),
-  //     };
-  //     if (!dataById) {
-  //       throw {
-  //         status: HttpStatus.NOT_FOUND,
-  //         message: MSG_ERROR.BAD_REQUEST_EXCEPTION,
-  //       };
-  //     }
-  //     const result = await this.userRepository.update(id, newDataUser);
-  //     if (result[0] !== 0) {
-  //       return {
-  //         status: HttpStatus.OK,
-  //         success: true,
-  //         message: MSG_SUCCESS.UPDATE("UPDATE USER"),
-  //       };
-  //     } else {
-  //       return {
-  //         status: HttpStatus.NOT_FOUND,
-  //         success: false,
-  //         message: MSG_ERROR.BAD_REQUEST_EXCEPTION,
-  //       };
-  //     }
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
+  async addMoney(newData: UserDepositHistoriesType, id: number) {
+    const transaction = await sequelize.transaction();
+
+    try {
+      const dataById = await this.userRepository.findOneById(id);
+
+      if (!dataById?.dataValues) {
+        throw {
+          status: HttpStatus.NOT_FOUND,
+          message: MSG_ERROR.BAD_REQUEST_EXCEPTION,
+        };
+      }
+
+      const result = await this.userRepository.update(
+        id,
+        {
+          depositedAmount:
+            Number(dataById?.dataValues.depositedAmount) +
+            Number(newData.depositedAmount),
+        },
+        transaction
+      );
+
+      const depositHistories = await this.depositHistoriesRepository.create(
+        {
+          userId: id,
+          amount: newData.depositedAmount,
+        },
+        transaction
+      );
+
+      if (result[0] !== 0 && depositHistories.dataValues) {
+        await transaction.commit();
+
+        return {
+          status: HttpStatus.OK,
+          success: true,
+          message: MSG_SUCCESS.UPDATE("UPDATE USER AND DEPOSIT_HISTORIES"),
+        };
+      } else {
+        return {
+          status: HttpStatus.NOT_FOUND,
+          success: false,
+          message: MSG_ERROR.BAD_REQUEST_EXCEPTION,
+        };
+      }
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
+  }
 }
 export default UserService;
