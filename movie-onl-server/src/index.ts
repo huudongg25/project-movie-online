@@ -11,6 +11,7 @@ import createTable from "./entities/index.entity";
 import sequelize from "./configs/db.config";
 import Router from "./routers";
 import handleError from "./middlewares/handleError.middleware";
+import { ENDPOINT } from "./common/endpoint";
 dotenv.config();
 //create server with express
 const server = express();
@@ -76,9 +77,16 @@ server.use(
   })
 );
 
+server.get("/api/endpoints", (req, res) => {
+  res.json({
+    endpoints: ENDPOINT,
+  });
+});
+
 //route on url
 Router(server);
 //err
+
 server.use(handleError);
 //create entity table db
 createTable();
