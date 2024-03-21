@@ -6,7 +6,7 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import path from "path";
 import http from "http";
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
 import createTable from "./entities/index.entity";
 import sequelize from "./configs/db.config";
 import Router from "./routers";
@@ -44,31 +44,35 @@ const io = new Server(app, {
     origin: "http://localhost:3000",
   },
 });
-// io.on("connection", (socket: Socket) => {
-//   console.log(socket.id);
-//   socket.on("blockUser", (userId: any) => {
-//     console.log(userId);
 
-//     io.emit("logout", userId);
-//   });
-//   socket.on("commentNew", (roomId: any) => {
-//     console.log(roomId);
-//     io.emit("comment", roomId);
-//   });
-//   socket.on("commentLike", (commentId: any) => {
-//     console.log(commentId);
-//     io.emit("like", commentId);
-//   });
-//   socket.on("commentDelete", (commentId: any) => {
-//     console.log(commentId);
-//     io.emit("delete", commentId);
-//   });
-// socket.on("disconnect", () => {
-//   console.log("Client disconnected");
-// });
-// });
-//
-//connect client
+io.on("connection", (socket: Socket) => {
+  socket.on("blockUser", (userId: any) => {
+    console.log(userId);
+
+    io.emit("logout", userId);
+  });
+
+  socket.on("commentNew", (roomId: any) => {
+    console.log(roomId);
+    io.emit("comment", roomId);
+  });
+
+  socket.on("commentLike", (commentId: any) => {
+    console.log(commentId);
+    io.emit("like", commentId);
+  });
+
+  socket.on("commentDelete", (commentId: any) => {
+    console.log(commentId);
+    io.emit("delete", commentId);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+  });
+});
+
+// connect client
 server.use(
   cors({
     origin: "http://localhost:3000",
@@ -77,6 +81,7 @@ server.use(
   })
 );
 
+//get endpoint api
 server.get("/api/endpoints", (req, res) => {
   res.json({
     endpoints: ENDPOINT,
