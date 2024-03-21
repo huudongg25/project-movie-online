@@ -43,4 +43,7 @@ export const ENDPOINT = {
   // favorite endpoint
   FAVORITE: `/favorites/:movieId`, //find all by movieId
   FAVORITE_CREATE: `/favorites/create`, // create
+  // admin endpoint
+  ADMIN_LOGIN: `/admins/login`,
+  ADMIN_CREATE: `/admins/create`,
 };

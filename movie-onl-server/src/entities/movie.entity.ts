@@ -73,7 +73,7 @@ const Movie = sequelize.define(
 );
 Movie.belongsTo(Category, {
   foreignKey: "categoryId",
-  onDelete: "CASCADE",
+  onDelete: "NO ACTION",
   onUpdate: "CASCADE",
 });
 Category.hasMany(Movie, {
