@@ -57,4 +57,6 @@ userRouter.patch(
   userController.addMoney
 );
 
+userRouter.post(ENDPOINT.LOGOUT, authLogin, authorLogin, userController.logout);
+
 export default userRouter;

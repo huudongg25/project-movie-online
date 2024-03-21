@@ -4,8 +4,8 @@ export const ENDPOINT = {
   // auth endpoint
   LOGIN: `/auth/login`,
   REGISTER: `/auth/register`,
-  LOGOUT: `/auth/logout`,
   // users endpoint
+  LOGOUT: `/users/logout`,
   USERS: `/users`, //findAll
   USER_DETAIL: `/users/details/:id`, //details
   FORGOT_PASSWORD: "/users/forgot-password", //forgot password
@@ -46,4 +46,5 @@ export const ENDPOINT = {
   // admin endpoint
   ADMIN_LOGIN: `/admins/login`,
   ADMIN_CREATE: `/admins/create`,
+  ADMIN_LOGOUT: `/admins/logout`,
 };
