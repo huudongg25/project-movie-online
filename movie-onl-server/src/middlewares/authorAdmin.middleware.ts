@@ -6,7 +6,7 @@ const authorAdminLogin = async (
   res: Response,
   next: NextFunction
 ) => {
-  if (req.user?.status === 2) {
+  if (req.user?.role === 2) {
     next();
   } else {
     throw new UnauthorizedException(
