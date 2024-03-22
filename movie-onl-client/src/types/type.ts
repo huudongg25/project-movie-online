@@ -92,6 +92,14 @@ export interface MovieItemProps {
   mediaType: string;
 }
 
+export interface Review {
+  id: number;
+  content: string;
+  user: {
+    id: number;
+    displayName: string;
+  };
+}
 export interface MovieReviewProps {
   reviews: Review[];
   media: any;
@@ -115,4 +123,33 @@ export interface MovieSlideProps {
 
 export interface AutoSwiperProps {
   children: ReactNode;
+}
+
+export interface GenreProps {
+  id: number;
+  name: string;
+}
+
+export interface MediaGridProps {
+  medias: any[];
+  mediaType: string;
+}
+
+export interface NavigateSwiperProps {
+  children: ReactNode;
+}
+
+export interface PageWrapperProps {
+  state: string;
+  children: ReactNode;
+}
+
+export interface SidebarProps {
+  open: boolean;
+  toggleSidebar: (open: boolean) => void;
+}
+
+export interface ScrollProps {
+  children: React.ReactElement;
+  window?: () => Window;
 }

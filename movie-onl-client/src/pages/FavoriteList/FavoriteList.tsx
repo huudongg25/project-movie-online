@@ -5,9 +5,11 @@ import MovieItem from "../../components/MovieItem/MovieItem";
 import Container from "../../components/Container/Container";
 
 const FavoriteItem = () => {
+  const media = "media";
+  const mediaType = "movie";
   return (
     <>
-      <MovieItem />
+      <MovieItem media={media} mediaType={mediaType} />
       <LoadingButton
         fullWidth
         variant="contained"
