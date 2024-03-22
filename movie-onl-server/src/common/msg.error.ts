@@ -20,6 +20,7 @@ export const MSG_ERROR = {
   GATE_WAY_TIME_OUT_EXCEPTION: "Gateway timeout",
   EMAIL_ERROR: "Email đã tồn tại",
   BAD_GET: "No content",
+  BAD_CATEGORY: "Please remove all movie hava category",
 };
 export const MSG_VALIDATION = {
   UNAUTHORZIED_EXCEPTION: "Email hoặc mật khẩu không đúng",

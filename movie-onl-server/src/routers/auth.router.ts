@@ -1,5 +1,5 @@
 import express from "express";
-import { ENDPOINT } from "./authenEndpoint";
+import { ENDPOINT } from "../common/endpoint";
 import findEmail from "../middlewares/findEmail.middleware";
 import validateInput from "../middlewares/validate";
 import AuthController from "../controllers/auth.controller";

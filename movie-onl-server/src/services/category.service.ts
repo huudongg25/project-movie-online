@@ -1,4 +1,5 @@
 import { HttpStatus, MSG_ERROR, MSG_SUCCESS } from "../common/msg.error";
+import { BadRequestException } from "../exception/index.exception";
 import CategoryRepository from "../repositories/category.repository";
 import { CategoryType, ResponseCategory } from "../types/category.type";
 

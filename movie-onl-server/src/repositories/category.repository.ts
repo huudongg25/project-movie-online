@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   DatabaseConnectionError,
   ServerException,
 } from "../exception/index.exception";
@@ -44,7 +45,10 @@ class CategoryRepository {
   async delete(id: number) {
     try {
       return await Category.destroy({ where: { id } });
-    } catch (error) {
+    } catch (error: any) {
+      if (error.name == "SequelizeForeignKeyConstraintError") {
+        throw new BadRequestException(MSG_ERROR.BAD_CATEGORY);
+      }
       throw new DatabaseConnectionError(MSG_ERROR.DATA_UNCONNECTION_EXCEPTION);
     }
   }

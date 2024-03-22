@@ -167,6 +167,17 @@ class UserController {
       next(error);
     }
   }
+
+  async logout(req: Request, res: Response, next: NextFunction) {
+    try {
+      await req.session.destroy(function (error: Error) {
+        if (error) throw error;
+        res.json("logout ok");
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default UserController;

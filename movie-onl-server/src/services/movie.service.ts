@@ -40,7 +40,7 @@ class MovieService {
         };
       }
       return {
-        status: HttpStatus.NOT_FOUND,
+        status: HttpStatus.OK,
         data: result as MovieType,
         message: MSG_ERROR.BAD_REQUEST_EXCEPTION,
       };
@@ -99,9 +99,10 @@ class MovieService {
           message: MSG_SUCCESS.GET("MOVIE"),
         };
       }
-      throw {
-        status: HttpStatus.NOT_FOUND,
-        message: MSG_ERROR.BAD_REQUEST_EXCEPTION,
+      return {
+        status: HttpStatus.OK,
+        data: 0 as MovieType,
+        message: MSG_ERROR.NOT_FOUND_EXCEPTION,
       };
     } catch (error) {
       throw error;
