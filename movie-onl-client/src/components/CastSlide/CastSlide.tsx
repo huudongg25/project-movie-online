@@ -24,7 +24,7 @@ const CastSlide: React.FC<CastSlideProps> = ({ casts }) => {
       >
         {casts.map((cast, index) => (
           <SwiperSlide key={index}>
-            <Link to={routesPath.person(cast.id)}>
+            <Link to={routesPath.person(`${cast.id}`)}>
               <Box
                 sx={{
                   paddingTop: "120%",

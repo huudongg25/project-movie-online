@@ -6,7 +6,9 @@ import PublicRouter from "./routes/Public.router";
 function App() {
   return (
     <div className="App">
-      <PublicRouter />
+      <BrowserRouter>
+        <PublicRouter />
+      </BrowserRouter>
     </div>
   );
 }
