@@ -9,6 +9,8 @@ import {
   Paper,
   Button,
   TablePagination,
+  Select,
+  MenuItem,
 } from "@mui/material";
 
 interface User {
@@ -22,29 +24,57 @@ const Users: React.FC = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
   const users: User[] = [
     { id: 1, name: "John Doe", email: "john.doe@example.com", role: "Admin" },
-    { id: 2, name: "Jane Smith", email: "jane.smith@example.com", role: "User" },
-    { id: 3, name: "Alice Johnson", email: "alice.johnson@example.com", role: "User" },
-    { id: 3, name: "Alice Johnson", email: "alice.johnson@example.com", role: "User" },
-    { id: 3, name: "Alice Johnson", email: "alice.johnson@example.com", role: "User" },
-    { id: 3, name: "Alice Johnson", email: "alice.johnson@example.com", role: "User" },
-
+    {
+      id: 2,
+      name: "Jane Smith",
+      email: "jane.smith@example.com",
+      role: "User",
+    },
+    {
+      id: 3,
+      name: "Alice Johnson",
+      email: "alice.johnson@example.com",
+      role: "User",
+    },
+    {
+      id: 3,
+      name: "Alice Johnson",
+      email: "alice.johnson@example.com",
+      role: "User",
+    },
+    {
+      id: 3,
+      name: "Alice Johnson",
+      email: "alice.johnson@example.com",
+      role: "User",
+    },
+    {
+      id: 3,
+      name: "Alice Johnson",
+      email: "alice.johnson@example.com",
+      role: "User",
+    },
   ];
 
   return (
     <div>
       <section className="content">
-        <h2>Users Management</h2>
+        <h2>Quản lí người dùng</h2>
         <hr style={{ margin: "20px 0" }} />
         <TableContainer component={Paper}>
           <Table>
@@ -58,17 +88,24 @@ const Users: React.FC = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user) => (
-                <TableRow key={user.id}>
-                  <TableCell>{user.id}</TableCell>
-                  <TableCell>{user.name}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.role}</TableCell>
-                  <TableCell>
-                    <Button variant="outlined">Block</Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {users
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((user) => (
+                  <TableRow key={user.id}>
+                    <TableCell>{user.id}</TableCell>
+                    <TableCell>{user.name}</TableCell>
+                    <TableCell>{user.email}</TableCell>
+                    <TableCell>
+                      <Select size="small" value={user.role} variant="outlined">
+                        <MenuItem value="Admin">Admin</MenuItem>
+                        <MenuItem value="User">User</MenuItem>
+                      </Select>
+                    </TableCell>
+                    <TableCell>
+                      <Button variant="outlined">Block</Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>

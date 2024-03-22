@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./Movies.css";
 import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
@@ -9,9 +8,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import "./Movies.css";
 import { Button, TablePagination } from "@mui/material";
-
+import "./Movies.css";
 interface Movie {
   name: string;
   category: string;
@@ -109,7 +107,7 @@ const Movies: React.FC = () => {
 
   return (
     <div className="content">
-      <h2>Movies Management</h2>
+      <h2>Quản lí phim</h2>
       <hr style={{ margin: "20px 0" }} />
       <Link to="/create-movie">
         <Button className="add-movie" variant="outlined" color="inherit">

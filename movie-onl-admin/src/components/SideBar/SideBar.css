@@ -117,3 +117,28 @@ ul li a {
       justify-content: center;
       margin: 10px;
   }
+/* CSS cho tablet */
+@media only screen and (max-width: 768px) {
+  .sidebar-layout {
+    flex: 0 0 auto; /* Đặt lại cho sidebar có thể co giãn */
+    width: 100%; /* Chỉnh độ rộng cho phù hợp với màn hình nhỏ */
+    margin-right: 0; /* Loại bỏ margin bên phải */
+  }
+
+  .content-layout {
+    padding-left: 20px; /* Điều chỉnh padding cho phần content */
+    padding-right: 20px;
+  }
+}
+
+/* CSS cho mobile */
+@media only screen and (max-width: 480px) {
+  .sidebar-layout {
+    display: none; /* Ẩn sidebar ở màn hình mobile */
+  }
+
+  .content-layout {
+    padding-left: 20px; /* Điều chỉnh padding cho phần content */
+    padding-right: 20px;
+  }
+}
