@@ -17,8 +17,8 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
 const ReviewItem: React.FC<{
-  review: Review;
-  onRemoved: (id: string) => void;
+  review: MovieReviewProps["reviews"][0];
+  onRemoved: (id: number) => void;
 }> = ({ review, onRemoved }) => {
   const { user } = useSelector((state: any) => state.user);
   const [onRequest, setOnRequest] = useState(false);
@@ -27,10 +27,10 @@ const ReviewItem: React.FC<{
     if (onRequest) return;
     setOnRequest(true);
 
-    const { response, err } = await reviewApi.remove({ reviewId: review.id });
+    // const { response, err } = await reviewApi.remove({ reviewId: review.id });
 
-    if (err) toast.error(err.message);
-    if (response) onRemoved(review.id);
+    // if (err) toast.error(err.message);
+    // if (response) onRemoved(review.id);
   };
   return (
     <Box
@@ -51,8 +51,8 @@ const ReviewItem: React.FC<{
               {review.user?.displayName}
             </Typography>
             <Typography variant="caption">
-              {review.createdAt &&
-                dayjs(review.createdAt).format("DD-MM-YYYY HH:mm:ss")}
+              {/* {review.createdAt &&
+                dayjs(review.createdAt).format("DD-MM-YYYY HH:mm:ss")} */}
             </Typography>
           </Stack>
           <Typography variant="body1" textAlign="justify">
@@ -87,8 +87,12 @@ const MovieReview: React.FC<MovieReviewProps> = ({
   mediaType,
 }) => {
   const { user } = useSelector((state: any) => state.user);
-  const [listReviews, setListReviews] = useState<Review[]>([]);
-  const [filteredReviews, setFilteredReviews] = useState<Review[]>([]);
+  const [listReviews, setListReviews] = useState<MovieReviewProps["reviews"]>(
+    []
+  );
+  const [filteredReviews, setFilteredReviews] = useState<
+    MovieReviewProps["reviews"]
+  >([]);
   const [page, setPage] = useState(1);
   const [onRequest, setOnRequest] = useState(false);
   const [content, setContent] = useState("");
@@ -113,17 +117,17 @@ const MovieReview: React.FC<MovieReviewProps> = ({
       mediaPoster: media.poster_path,
     };
 
-    const { response, err } = await reviewApi.add(body);
+    // const { response, err } = await reviewApi.add(body);
 
     setOnRequest(false);
 
-    if (err) toast.error(err.message);
-    if (response) {
-      toast.success("Post review success");
-      setFilteredReviews([...filteredReviews, response]);
-      setReviewCount(reviewCount + 1);
-      setContent("");
-    }
+    // if (err) toast.error(err.message);
+    // if (response) {
+    //   toast.success("Post review success");
+    //   setFilteredReviews([...filteredReviews, response]);
+    //   setReviewCount(reviewCount + 1);
+    //   setContent("");
+    // }
   };
 
   const onLoadMore = () => {
@@ -134,7 +138,7 @@ const MovieReview: React.FC<MovieReviewProps> = ({
     setPage(page + 1);
   };
 
-  const onRemoved = (id: string) => {
+  const onRemoved = (id: number) => {
     if (listReviews.findIndex((e) => e.id === id) !== -1) {
       const newListReviews = [...listReviews].filter((e) => e.id !== id);
       setListReviews(newListReviews);
@@ -169,7 +173,7 @@ const MovieReview: React.FC<MovieReviewProps> = ({
           <>
             <Divider />
             <Stack direction="row" spacing={2}>
-              <DefaultAvatar text={user.displayName} />
+              {/* <DefaultAvatar text={user.displayName} /> */}
               <Stack spacing={2} flexGrow={1}>
                 <Typography variant="h6" fontWeight="700">
                   {user.displayName}

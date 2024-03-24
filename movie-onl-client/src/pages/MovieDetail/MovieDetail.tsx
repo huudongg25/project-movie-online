@@ -8,7 +8,7 @@ import CircularRate from "../../components/CircularRate/CircularRate";
 import Container from "../../components/Container/Container";
 import ImageHeader from "../../components/ImageHeader/ImageHeader";
 import CastSlide from "../../components/CastSlide/CastSlide";
-import MovieSlide from "../../components/MovieSlide/MovieSlide";
+// import MovieSlide from "../../components/MovieSlide/MovieSlide";
 import MovieReview from "../../components/MovieReview/MovieReview";
 import tmdbConfigs from "../../configs/tmdb.config";
 import { useParams } from "react-router";
@@ -21,7 +21,7 @@ import { addFavorite, removeFavorite } from "../../redux/UserSlice";
 import uiConfigs from "./../../configs/UI.config";
 import PosterSlide from "../../components/PosterSlide/PosterSlide";
 
-const MovieDetail = () => {
+const MovieDetail: React.FC = () => {
   const { mediaType, mediaId } = useParams<{
     mediaType: string;
     mediaId: string;
@@ -37,28 +37,6 @@ const MovieDetail = () => {
   const dispatch = useDispatch();
 
   const videoRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    const getMedia = async () => {
-      dispatch(setGlobalLoading(true));
-      const { response, err } = await mediaApi.getDetail({
-        mediaType,
-        mediaId,
-      });
-      dispatch(setGlobalLoading(false));
-
-      if (response) {
-        setMedia(response);
-        setIsFavorite(response.isFavorite);
-        setGenres(response.genres.splice(0, 2));
-      }
-
-      if (err) toast.error(err.message);
-    };
-
-    getMedia();
-  }, [mediaType, mediaId, dispatch]);
 
   const onFavoriteClick = async () => {
     if (!user) return dispatch(setAuthModalOpen(true));
@@ -79,40 +57,9 @@ const MovieDetail = () => {
       mediaPoster: media.poster_path,
       mediaRate: media.vote_average,
     };
-
-    const { response, err } = await favoriteApi.add(body);
-
-    setOnRequest(false);
-
-    if (err) toast.error(err.message);
-    if (response) {
-      dispatch(addFavorite(response));
-      setIsFavorite(true);
-      toast.success("Add favorite success");
-    }
   };
 
-  const onRemoveFavorite = async () => {
-    if (onRequest) return;
-    setOnRequest(true);
-
-    const favorite = listFavorites.find(
-      (e: any) => e.mediaId.toString() === media.id.toString()
-    );
-
-    const { response, err } = await favoriteApi.remove({
-      favoriteId: favorite.id,
-    });
-
-    setOnRequest(false);
-
-    if (err) toast.error(err.message);
-    if (response) {
-      dispatch(removeFavorite(favorite));
-      setIsFavorite(false);
-      toast.success("Remove favorite success");
-    }
-  };
+  const onRemoveFavorite = async () => {};
   return media ? (
     <>
       <ImageHeader
@@ -227,22 +174,25 @@ const MovieDetail = () => {
             </Box>
           </Box>
         </Box>
-        <div ref={videoRef} style={{ paddingTop: "2rem" }}>
+        {/* <div ref={videoRef} style={{ paddingTop: "2rem" }}>
           <Container header="Videos">
-            <MovieSlide videos={[...media.videos.results].splice(0, 5)} />
+            <MovieSlide
+              mediaType={mediaType}
+              mediaCategory={media.videos.results}
+            />
           </Container>
-        </div>
+        </div> */}
         {media.images.posters.length > 0 && (
           <Container header="posters">
             <PosterSlide posters={media.images.posters} />
           </Container>
         )}
-        <MovieReview
+        {/* <MovieReview
           reviews={media.reviews}
           media={media}
           mediaType={mediaType}
-        />
-        <Container header="you may also like">
+        /> */}
+        {/* <Container header="you may also like">
           {media.recommend.length > 0 ? (
             <RecommendSlide medias={media.recommend} mediaType={mediaType} />
           ) : (
@@ -251,7 +201,7 @@ const MovieDetail = () => {
               mediaCategory={tmdbConfigs.mediaCategory.top_rated}
             />
           )}
-        </Container>
+        </Container> */}
       </Box>
     </>
   ) : null;
