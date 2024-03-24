@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
@@ -9,24 +9,27 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Button, TablePagination } from "@mui/material";
+import { getAllMovies } from "../../api/movie";
+import { getAllCategories } from "../../api/category";
 import "./Movies.css";
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+
 interface Movie {
+  id: number;
   name: string;
-  category: string;
-  image: string;
-  views: number;
-  releaseDate: string;
+  categoryId: number;
+  director: string;
+  price: number;
+  video: string;
+  totalViews: number;
+  manufactureYear: string;
 }
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
+interface Category {
+  id: number;
+  name: string;
+}
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -37,54 +40,39 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const rows: Movie[] = [
-  {
-    name: "Frozen yoghurt",
-    category: "Category A",
-    image: "image_url",
-    views: 1000,
-    releaseDate: "01/01/2022",
-  },
-  {
-    name: "Ice cream sandwich",
-    category: "Category B",
-    image: "image_url",
-    views: 2000,
-    releaseDate: "02/02/2022",
-  },
-  {
-    name: "Eclair",
-    category: "Category A",
-    image: "image_url",
-    views: 3000,
-    releaseDate: "03/03/2022",
-  },
-  {
-    name: "Cupcake",
-    category: "Category B",
-    image: "image_url",
-    views: 4000,
-    releaseDate: "04/04/2022",
-  },
-  {
-    name: "Gingerbread",
-    category: "Category A",
-    image: "image_url",
-    views: 5000,
-    releaseDate: "05/05/2022",
-  },
-  {
-    name: "Gingerbread",
-    category: "Category A",
-    image: "image_url",
-    views: 5000,
-    releaseDate: "05/05/2022",
-  },
-];
-
 const Movies: React.FC = () => {
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const movieResponse = await getAllMovies(
+          "ASC",
+          rowsPerPage,
+          page + 1,
+          ""
+        );
+        const categoryResponse = await getAllCategories("ASC", 7, 1, "");
+
+        setMovies(movieResponse.data);
+        setCategories(categoryResponse.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [page, rowsPerPage]);
+
+  const getCategoryName = (categoryId: number) => {
+    const category = categories.find(
+      (categoryName) => categoryName.id === categoryId
+    );
+    return category ? category.name : "";
+  };
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
@@ -100,53 +88,54 @@ const Movies: React.FC = () => {
     setPage(0);
   };
 
-  const slicedRows = rows.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
-  );
-
   return (
-    <div className="content">
+    <div className="movie-management">
       <h2>Quản lí phim</h2>
       <hr style={{ margin: "20px 0" }} />
       <Link to="/create-movie">
-        <Button className="add-movie" variant="outlined" color="inherit">
-          Thêm phim mới
-        </Button>
+        <div className="add-new-movie">
+          <Button variant="outlined" color="inherit">
+            Thêm phim mới
+          </Button>
+        </div>
       </Link>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>STT</StyledTableCell>
-              <StyledTableCell>Tên phim</StyledTableCell>
-              <StyledTableCell>Danh mục</StyledTableCell>
-              <StyledTableCell>Ảnh</StyledTableCell>
-              <StyledTableCell>Lượt xem</StyledTableCell>
-              <StyledTableCell>Ngày phát hành</StyledTableCell>
-              <StyledTableCell>Action</StyledTableCell>
+              <TableCell>STT</TableCell>
+              <TableCell>Tên phim</TableCell>
+              <TableCell>Danh mục</TableCell>
+              <TableCell>Link phim</TableCell>
+              <TableCell>Lượt xem</TableCell>
+              <TableCell>Năm phát hành</TableCell>
+              <TableCell>Đạo diễn</TableCell>
+              <TableCell>Giá</TableCell>
+              <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {slicedRows.map((row, index) => (
-              <StyledTableRow key={index}>
-                <StyledTableCell component="th" scope="row">
-                  {index + 1 + page * rowsPerPage}
-                </StyledTableCell>
-                <StyledTableCell>{row.name}</StyledTableCell>
-                <StyledTableCell>{row.category}</StyledTableCell>
-                <StyledTableCell>{row.image}</StyledTableCell>
-                <StyledTableCell>{row.views}</StyledTableCell>
-                <StyledTableCell>{row.releaseDate}</StyledTableCell>
-                <StyledTableCell className="action-button">
-                  <Button size="small" variant="contained">
-                    Sửa
-                  </Button>
-                  <Button size="small" variant="contained" color="error">
-                    Xóa
-                  </Button>
-                </StyledTableCell>
-              </StyledTableRow>
+            {movies.map((movie, index) => (
+              <TableRow key={movie.id}>
+                <TableCell>{index + 1 + page * rowsPerPage}</TableCell>
+                <TableCell>{movie.name}</TableCell>
+                <TableCell>{getCategoryName(movie.categoryId)}</TableCell>
+                <TableCell>{movie.video}</TableCell>
+                <TableCell>{movie.totalViews}</TableCell>
+                <TableCell>{movie.manufactureYear}</TableCell>
+                <TableCell>{movie.director}</TableCell>
+                <TableCell>{movie.price}$</TableCell>
+                <TableCell className="action-button">
+                  <div className="action-button">
+                    <button>
+                      <FaEdit />
+                    </button>
+                    <button>
+                      <MdDelete />
+                    </button>
+                  </div>
+                </TableCell>
+              </TableRow>
             ))}
           </TableBody>
         </Table>
@@ -154,7 +143,7 @@ const Movies: React.FC = () => {
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={rows.length}
+        count={movies.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

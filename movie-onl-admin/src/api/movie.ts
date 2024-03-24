@@ -1,6 +1,7 @@
 import baseAxios from "../configs/axios.config";
 import { MovieType } from "../types/movie.type";
 
+const BASE_URL = "/api/v1"; 
 
 export const getAllMovies = async (
   sort: string,
@@ -9,7 +10,8 @@ export const getAllMovies = async (
   search: string
 ) => {
   try {
-    const response = await baseAxios.get("/movies", {
+    const response = await baseAxios.get(`${BASE_URL}/movies`, {
+      
       params: { sort, limit, page, search },
     });
     return response.data;
@@ -20,7 +22,7 @@ export const getAllMovies = async (
 
 export const getMovieById = async (id: number) => {
   try {
-    const response = await baseAxios.get(`/movies/${id}`);
+    const response = await baseAxios.get(`${BASE_URL}/movies/${id}`); 
     return response.data;
   } catch (error) {
     throw error;
@@ -29,7 +31,7 @@ export const getMovieById = async (id: number) => {
 
 export const createMovie = async (movieData: MovieType) => {
   try {
-    const response = await baseAxios.post("/movies", movieData);
+    const response = await baseAxios.post(`${BASE_URL}/movies/create`, movieData); 
     return response.data;
   } catch (error) {
     throw error;
@@ -38,7 +40,7 @@ export const createMovie = async (movieData: MovieType) => {
 
 export const updateMovie = async (id: number, movieData: MovieType) => {
   try {
-    const response = await baseAxios.put(`/movies/${id}`, movieData);
+    const response = await baseAxios.put(`${BASE_URL}/movies/update/${id}`, movieData); 
     return response.data;
   } catch (error) {
     throw error;
@@ -47,7 +49,7 @@ export const updateMovie = async (id: number, movieData: MovieType) => {
 
 export const deleteMovie = async (id: number) => {
   try {
-    const response = await baseAxios.delete(`/movies/${id}`);
+    const response = await baseAxios.delete(`${BASE_URL}/movies/remove/${id}`); 
     return response.data;
   } catch (error) {
     throw error;

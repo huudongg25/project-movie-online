@@ -1,6 +1,8 @@
 import baseAxios from "../configs/axios.config";
 import { UserType } from "../types/user.type";
 
+const BASE_URL = "/api/v1";
+
 export const getAllUser = async (
   sort: string,
   limit: number,
@@ -8,7 +10,7 @@ export const getAllUser = async (
   search: string
 ) => {
   try {
-    const response = await baseAxios.get("/users", {
+    const response = await baseAxios.get(`${BASE_URL}/users`, {
       params: { sort, limit, page, search },
     });
     return response.data;
@@ -19,7 +21,7 @@ export const getAllUser = async (
 
 export const getUserById = async (id: number) => {
   try {
-    const response = await baseAxios.get(`/users/${id}`);
+    const response = await baseAxios.get(`${BASE_URL}/users/${id}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -28,7 +30,7 @@ export const getUserById = async (id: number) => {
 
 export const createUser = async (userData: UserType) => {
   try {
-    const response = await baseAxios.post("/users", userData);
+    const response = await baseAxios.post(`${BASE_URL}/users`, userData);
     return response.data;
   } catch (error) {
     throw error;
@@ -37,10 +39,9 @@ export const createUser = async (userData: UserType) => {
 
 export const updateUser = async (id: number, userData: UserType) => {
   try {
-    const response = await baseAxios.put(`/users/${id}`, userData);
+    const response = await baseAxios.put(`${BASE_URL}/users/${id}`, userData);
     return response.data;
   } catch (error) {
     throw error;
   }
 };
-

@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { FaRegUser, FaRegMoneyBillAlt } from "react-icons/fa";
-import { IoCartOutline } from "react-icons/io5";
 import { BarChart } from "@mui/x-charts";
 import { MdMovie } from "react-icons/md";
 import { getAllUser } from "../../api/user";

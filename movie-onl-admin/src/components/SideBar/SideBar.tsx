@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaUserCog } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
@@ -6,6 +6,8 @@ import { MdMovie } from "react-icons/md";
 import "./SideBar.css";
 import Button from "@mui/material/Button";
 import { FaBagShopping } from "react-icons/fa6";
+import { notifySuccess } from "../../common/toatify";
+import { ToastContainer } from "react-toastify";
 
 const SideBar: React.FC = () => {
   const location = useLocation();
@@ -14,8 +16,14 @@ const SideBar: React.FC = () => {
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
   };
+  const handleLogout = () => {
+    localStorage.removeItem("idUser");
+    localStorage.removeItem("token");
+    navigate("/");
+  };
   return (
     <div>
+      <ToastContainer></ToastContainer>
       <aside className="sidebar">
         <div className="logo-admin">
           <img
@@ -59,6 +67,17 @@ const SideBar: React.FC = () => {
           </li>
           <li
             className={`list-item ${
+              location.pathname === "/category" ? "active" : ""
+            }`}
+            onClick={() => handleTabClick("category")}
+          >
+            <Link className="sidebar-link" to="/category">
+              <MdMovie />
+              Quản thể loại
+            </Link>
+          </li>
+          <li
+            className={`list-item ${
               location.pathname === "/orders" ? "active" : ""
             }`}
             onClick={() => handleTabClick("orders")}
@@ -71,7 +90,7 @@ const SideBar: React.FC = () => {
           </li>
 
           <div className="logout-btn">
-            <Button variant="outlined" color="error">
+            <Button onClick={handleLogout} variant="outlined" color="error">
               Log out
             </Button>
           </div>

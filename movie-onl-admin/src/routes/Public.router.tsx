@@ -8,6 +8,7 @@ import CreateMovie from "../components/CreateMovie/CreateMovie";
 import EditMovie from "../components/EditMovie/EditMovie";
 import Login from "../components/Login/Login";
 import Order from "../components/Order/Order";
+import Category from "../components/Category/Category";
 
 const PublicRouters = () => {
   return (
@@ -20,6 +21,7 @@ const PublicRouters = () => {
         />
         <Route path="/movies" element={<DefaultLayout child={<Movies />} />} />
         <Route path="/users" element={<DefaultLayout child={<Users />} />} />
+        <Route path="/category" element={<DefaultLayout child={<Category />} />} />
         <Route
           path="/create-movie"
           element={<DefaultLayout child={<CreateMovie />} />}

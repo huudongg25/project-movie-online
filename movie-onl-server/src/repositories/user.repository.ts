@@ -34,6 +34,8 @@ class UserRepository {
     try {
       return await User.create({ ...newData });
     } catch (error) {
+      console.log(error);
+      
       throw new DatabaseConnectionError(MSG_ERROR.DATA_UNCONNECTION_EXCEPTION);
     }
   }
