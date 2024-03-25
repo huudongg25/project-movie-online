@@ -1,17 +1,38 @@
-import React from "react";
+// Dashboard.tsx
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
-import { FaRegUser, FaRegMoneyBillAlt } from "react-icons/fa";
-import { IoCartOutline } from "react-icons/io5";
 import { ToastContainer } from "react-toastify";
-import "./DashBoard.css";
+import { FaRegUser, FaRegMoneyBillAlt } from "react-icons/fa";
 import { BarChart } from "@mui/x-charts";
 import { MdMovie } from "react-icons/md";
+import { getAllUser } from "../../api/user";
+import { getAllMovies } from "../../api/movie";
+
+import "./DashBoard.css";
 
 const Dashboard: React.FC = () => {
+  const [userCount, setUserCount] = useState<number>(0);
+  const [movieCount, setMovieCount] = useState<number>(0);
+
+  useEffect(() => {
+    fetchAllData();
+  }, []);
+
+  const fetchAllData = async () => {
+    try {
+      const userResponse = await getAllUser("ASC", 3, 1, "");
+      const movieResponse = await getAllMovies("ASC", 3, 1, "");
+
+      setUserCount(userResponse.data.length);
+      setMovieCount(movieResponse.data.length);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   return (
     <section className="content active">
-      <ToastContainer></ToastContainer>
+      <ToastContainer />
       <h2>Dashboard</h2>
       <hr style={{ margin: "20px 0" }} />
       <div className="dashboard-content">
@@ -20,13 +41,13 @@ const Dashboard: React.FC = () => {
             link="/users"
             icon={<FaRegUser className="dashboard-icon" />}
             name="Users"
-            count={10}
+            count={userCount}
           />
           <Card
             link="/movies"
             icon={<MdMovie className="dashboard-icon" />}
             name="Movies"
-            count={20}
+            count={movieCount}
           />
           <Card
             link="/orders"
@@ -71,4 +92,3 @@ const Card: React.FC<CardProps> = ({ link, icon, name, count }) => (
 );
 
 export default Dashboard;
-

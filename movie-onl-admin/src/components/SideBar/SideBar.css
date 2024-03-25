@@ -17,7 +17,7 @@ ul li a {
   left: 0;
   bottom: 0;
   width: 300px;
-  background-color: #F3F3F3;
+  background-color: #f3f3f3;
 }
 
 .sidebar ul {
@@ -38,82 +38,80 @@ ul li a {
 }
 
 .sidebar ul .list-item:hover {
-  background-color: #FE4971;
+  background-color: #fe4971;
   border-radius: 16px;
 }
 
 .list-item.active {
-  background-color: #FE4971;
+  background-color: #fe4971;
   border-radius: 16px;
 }
 .logout-btn {
   margin: 40vh 40px;
 }
-.logo-admin img{
-    width: 200px;
-    height: 100px;
+.logo-admin img {
+  width: 200px;
+  height: 100px;
 }
-.logo-admin{
+.logo-admin {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin: 10px 0;
+}
 
-    display: flex;
-    justify-content: center;
-    margin: 10px;
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 300px;
+  background-color: #f3f3f3;
+  margin-right: 20px;
 }
-  .sidebar-link {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    margin: 10px 0;
-  }
-  
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 300px;
-    background-color: #F3F3F3;
-    margin-right: 20px;
-  }
-  
-  .sidebar ul {
-    margin-top: 50px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    width: 100%;
-    padding: 0 10px;  
-  }
-  
-  .sidebar ul .list-item {
-    cursor: pointer;
-    font-weight: 600;
-    color: #c4bcbcc5;
-    list-style: none;
-    padding: 10px;
-    width: 100%;
-  }
-  
-  .sidebar ul .list-item:hover {
-    background-color: #FE4971;
-    border-radius: 16px;
-  }
-  
-  .list-item.active {
-    background-color: #FE4971;
-    border-radius: 16px;
-  }
-  .logout-btn {
-    margin: 35vh 40px;
-  }
-  .logo-admin img{
-      width: 200px;
-      height: 100px;
-  }
-  .logo-admin{
-  
-      display: flex;
-      justify-content: center;
-      margin: 10px;
-  }
+
+.sidebar ul {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+  padding: 0 10px;
+}
+
+.sidebar ul .list-item {
+  cursor: pointer;
+  font-weight: 600;
+  color: #c4bcbcc5;
+  list-style: none;
+  padding: 10px;
+  width: 100%;
+}
+
+.sidebar ul .list-item:hover {
+  background-color: #fe4971;
+  border-radius: 16px;
+}
+
+.list-item.active {
+  background-color: #fe4971;
+  border-radius: 16px;
+}
+.logout-btn {
+  margin: 22vh 30px;
+}
+.logo-admin img {
+  width: 200px;
+  height: 100px;
+}
+.logo-admin {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}

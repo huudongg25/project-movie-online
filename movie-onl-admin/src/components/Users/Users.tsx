@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -10,60 +10,73 @@ import {
   Button,
   TablePagination,
 } from "@mui/material";
+import "./Users.css";
+import { getAllUser } from "../../api/user";
 
 interface User {
+  depositedAmount: number;
   id: number;
   name: string;
   email: string;
-  role: string;
+  avatar: string;
 }
 
 const Users: React.FC = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [users, setUsers] = useState<User[]>([]);
 
-  const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getAllUser("asc", rowsPerPage, page + 1, "");
+        setUsers(data.data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+    fetchData();
+  }, [page, rowsPerPage]);
+  console.log(users);
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
-  const users: User[] = [
-    { id: 1, name: "John Doe", email: "john.doe@example.com", role: "Admin" },
-    { id: 2, name: "Jane Smith", email: "jane.smith@example.com", role: "User" },
-    { id: 3, name: "Alice Johnson", email: "alice.johnson@example.com", role: "User" },
-    { id: 3, name: "Alice Johnson", email: "alice.johnson@example.com", role: "User" },
-    { id: 3, name: "Alice Johnson", email: "alice.johnson@example.com", role: "User" },
-    { id: 3, name: "Alice Johnson", email: "alice.johnson@example.com", role: "User" },
-
-  ];
-
   return (
     <div>
       <section className="content">
-        <h2>Users Management</h2>
+        <h2>Quản lí người dùng</h2>
         <hr style={{ margin: "20px 0" }} />
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell>ID</TableCell>
-                <TableCell>Name</TableCell>
                 <TableCell>Email</TableCell>
-                <TableCell>Role</TableCell>
+                <TableCell>Avatar</TableCell>
+                <TableCell>Monney</TableCell>
                 <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user) => (
+              {users.map((user) => (
                 <TableRow key={user.id}>
                   <TableCell>{user.id}</TableCell>
-                  <TableCell>{user.name}</TableCell>
                   <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.role}</TableCell>
+                  <TableCell className="avatar-img">
+                    <img src={user.avatar} alt="Avatar" />
+                  </TableCell>
+                  <TableCell>{user.depositedAmount}</TableCell>
                   <TableCell>
                     <Button variant="outlined">Block</Button>
                   </TableCell>

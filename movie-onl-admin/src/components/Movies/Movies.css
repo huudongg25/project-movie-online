@@ -1,7 +1,21 @@
-.add-movie{
-    margin: 20px;
+.add-new-movie {
+  margin: 10px 0;
 }
-.action-button{
-    display: flex;
-    gap: 6px;
+.action-button {
+  display: flex;
+
+}
+.action-button button {
+  padding: 6px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 16px;
+}
+.action-button button:hover {
+  background-color: #f3f3f3;
+  border-radius: 5px;
+  transform: scale(1.1);
+
 }
