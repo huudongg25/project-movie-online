@@ -91,7 +91,7 @@ const CreateMovie = () => {
       <hr style={{ margin: "20px 0" }} />
       <div className="create-movie-container">
         <Grid container spacing={2}>
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <div>
               <h3>Tên phim</h3>
               <TextField
@@ -102,7 +102,7 @@ const CreateMovie = () => {
               />
             </div>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <div>
               <h3>Đạo diễn</h3>
               <TextField
@@ -113,7 +113,7 @@ const CreateMovie = () => {
               />
             </div>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <div>
               <h3>Diễn viên</h3>
               <TextField
@@ -124,7 +124,7 @@ const CreateMovie = () => {
               />
             </div>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <div>
               <h3>Danh mục</h3>
               <Select
@@ -142,13 +142,24 @@ const CreateMovie = () => {
               </Select>
             </div>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <div>
               <h3>Năm sản xuất</h3>
               <TextField
                 fullWidth
                 name="manufactureYear"
                 value={movieData.manufactureYear}
+                onChange={handleChange}
+              />
+            </div>
+          </Grid>
+          <Grid item xs={6}>
+            <div>
+              <h3>Link phim</h3>
+              <TextField
+                fullWidth
+                name="video"
+                value={movieData.video}
                 onChange={handleChange}
               />
             </div>
@@ -166,24 +177,24 @@ const CreateMovie = () => {
               />
             </div>
           </Grid>
-          <Grid item xs={12}>
-            <div>
-              <h3>Link phim</h3>
-              <TextField
-                fullWidth
-                name="video"
-                value={movieData.video}
-                onChange={handleChange}
-              />
-            </div>
-          </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <div>
               <h3>Giá</h3>
               <TextField
                 fullWidth
                 name="price"
                 value={movieData.price}
+                onChange={handleChange}
+              />
+            </div>
+          </Grid>
+          <Grid item xs={6}>
+            <div>
+              <h3>Thời lượng phim</h3>
+              <TextField
+                fullWidth
+                name="movieDuration"
+                value={movieData.movieDuration}
                 onChange={handleChange}
               />
             </div>
@@ -200,17 +211,6 @@ const CreateMovie = () => {
             </div>
           </Grid>
           <Grid item xs={12}>
-            <div>
-              <h3>Thời lượng phim</h3>
-              <TextField
-                fullWidth
-                name="movieDuration"
-                value={movieData.movieDuration}
-                onChange={handleChange}
-              />
-            </div>
-          </Grid>
-          <Grid item xs={12}>
             <Button
               variant="contained"
               color="primary"
@@ -220,6 +220,7 @@ const CreateMovie = () => {
             </Button>
           </Grid>
         </Grid>
+        
       </div>
     </div>
   );

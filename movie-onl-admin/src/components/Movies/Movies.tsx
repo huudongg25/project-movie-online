@@ -9,11 +9,12 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Button, TablePagination } from "@mui/material";
-import { getAllMovies } from "../../api/movie";
+import { getAllMovies, deleteMovie } from "../../api/movie";
 import { getAllCategories } from "../../api/category";
 import "./Movies.css";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { Modal as AntdModal } from "antd";
 
 interface Movie {
   id: number;
@@ -74,6 +75,25 @@ const Movies: React.FC = () => {
     return category ? category.name : "";
   };
 
+  const handleDeleteMovie = async (id: number) => {
+    AntdModal.confirm({
+      title: "Xác nhận xóa phim",
+      content: "Bạn có chắc chắn muốn xóa phim này không?",
+      onOk: async () => {
+        try {
+          await deleteMovie(id);
+          setMovies(movies.filter((movie) => movie.id !== id));
+        } catch (error) {
+          console.error("Error deleting movie:", error);
+        }
+      },
+      onCancel: () => {
+        console.log("Cancel delete operation");
+      },
+    });
+  };
+  
+
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
@@ -127,11 +147,11 @@ const Movies: React.FC = () => {
                 <TableCell>{movie.price}$</TableCell>
                 <TableCell className="action-button">
                   <div className="action-button">
-                    <button>
-                      <FaEdit />
-                    </button>
-                    <button>
-                      <MdDelete />
+                    <Link to={`/edit-movie/${movie.id}`}>
+                      <FaEdit  className="edit-btn"/>
+                    </Link>
+                    <button onClick={() => handleDeleteMovie(movie.id)}>
+                      <MdDelete className="delete-btn"/>
                     </button>
                   </div>
                 </TableCell>
