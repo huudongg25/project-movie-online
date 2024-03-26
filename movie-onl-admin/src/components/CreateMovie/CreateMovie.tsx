@@ -77,10 +77,11 @@ const CreateMovie = () => {
         datePublication: "",
         movieDuration: "",
       });
-      navigate("/movies");
+      setTimeout(() => {
+        navigate("/movies");
+      }, 1000);
     } catch (error) {
-      console.error("Error creating movie:", error);
-      notifyError("Error create movie .");
+      notifyError("Error create movie.");
     }
   };
 
@@ -220,7 +221,6 @@ const CreateMovie = () => {
             </Button>
           </Grid>
         </Grid>
-        
       </div>
     </div>
   );

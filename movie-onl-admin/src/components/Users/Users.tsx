@@ -9,9 +9,13 @@ import {
   Paper,
   Button,
   TablePagination,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 import "./Users.css";
-import { Modal as AntdModal } from "antd";
 import { getAllUser, updateUser } from "../../api/user";
 import { UserType } from "../../types/user.type";
 
@@ -30,6 +34,8 @@ const Users: React.FC = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [users, setUsers] = useState<User[]>([]);
+  const [confirmBlockDialogOpen, setConfirmBlockDialogOpen] = useState(false);
+  const [userIdToBlock, setUserIdToBlock] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,7 +64,8 @@ const Users: React.FC = () => {
   };
 
   const handleBlockUser = (id: number) => {
-    handleConfirmBlockUser(id);
+    setUserIdToBlock(id);
+    setConfirmBlockDialogOpen(true);
   };
 
   const handleUnblockUser = async (id: number) => {
@@ -72,24 +79,27 @@ const Users: React.FC = () => {
     }
   };
 
-  const handleConfirmBlockUser = (id: number) => {
-    AntdModal.confirm({
-      title: "Xác nhận",
-      content: "Bạn có chắc chắn muốn block người dùng này?",
-      onOk: () => blockUser(id),
-      onCancel: () => console.log("Cancel"),
-    });
+  const handleConfirmBlockUser = async () => {
+    if (userIdToBlock !== null) {
+      try {
+        await updateUser(userIdToBlock, { status: 2 });
+        setUsers(
+          users.map((user) =>
+            user.id === userIdToBlock ? { ...user, status: 2 } : user
+          )
+        );
+      } catch (error) {
+        console.error("Error blocking user:", error);
+      } finally {
+        setUserIdToBlock(null);
+        setConfirmBlockDialogOpen(false);
+      }
+    }
   };
 
-  const blockUser = async (id: number) => {
-    try {
-      await updateUser(id, { status: 2 });
-      setUsers(
-        users.map((user) => (user.id === id ? { ...user, status: 2 } : user))
-      );
-    } catch (error) {
-      console.error("Error blocking user:", error);
-    }
+  const handleCloseConfirmBlockDialog = () => {
+    setUserIdToBlock(null);
+    setConfirmBlockDialogOpen(false);
   };
 
   return (
@@ -154,6 +164,23 @@ const Users: React.FC = () => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </section>
+      <Dialog
+        open={confirmBlockDialogOpen}
+        onClose={handleCloseConfirmBlockDialog}
+      >
+        <DialogTitle>Xác nhận</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Bạn có chắc chắn muốn block người dùng này?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseConfirmBlockDialog}>Cancel</Button>
+          <Button onClick={handleConfirmBlockUser} autoFocus>
+            Ok
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

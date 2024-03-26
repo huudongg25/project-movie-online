@@ -19,11 +19,18 @@
   transform: scale(1.1);
 }
 .edit-btn {
-  color: black;
+  color: rgb(46, 46, 159);
+  font-size: 16px;
+}
+.delete-btn {
+  color: red;
   font-size: 16px;
 }
 .edit-btn:hover {
   background-color: #f3f3f3;
   border-radius: 5px;
   transform: scale(1.1);
+}
+.search-container{
+  margin: 20px 0;
 }
