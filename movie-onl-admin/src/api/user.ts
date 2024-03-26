@@ -39,7 +39,7 @@ export const createUser = async (userData: UserType) => {
 
 export const updateUser = async (id: number, userData: UserType) => {
   try {
-    const response = await baseAxios.put(`${BASE_URL}/users/${id}`, userData);
+    const response = await baseAxios.patch(`${BASE_URL}/users/update-status/${id}`, userData);
     return response.data;
   } catch (error) {
     throw error;

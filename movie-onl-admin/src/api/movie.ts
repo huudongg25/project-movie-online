@@ -22,7 +22,7 @@ export const getAllMovies = async (
 
 export const getMovieById = async (id: number) => {
   try {
-    const response = await baseAxios.get(`${BASE_URL}/movies/${id}`); 
+    const response = await baseAxios.get(`${BASE_URL}/movies/details/${id}`); 
     return response.data;
   } catch (error) {
     throw error;
@@ -40,7 +40,7 @@ export const createMovie = async (movieData: MovieType) => {
 
 export const updateMovie = async (id: number, movieData: MovieType) => {
   try {
-    const response = await baseAxios.put(`${BASE_URL}/movies/update/${id}`, movieData); 
+    const response = await baseAxios.patch(`${BASE_URL}/movies/update/${id}`, movieData); 
     return response.data;
   } catch (error) {
     throw error;

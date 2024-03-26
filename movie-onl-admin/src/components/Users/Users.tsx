@@ -11,14 +11,19 @@ import {
   TablePagination,
 } from "@mui/material";
 import "./Users.css";
-import { getAllUser } from "../../api/user";
+import { Modal as AntdModal } from "antd";
+import { getAllUser, updateUser } from "../../api/user";
+import { UserType } from "../../types/user.type";
 
 interface User {
-  depositedAmount: number;
   id: number;
-  name: string;
   email: string;
+  password: string;
+  address: string;
+  birthDay: string;
   avatar: string;
+  depositedAmount: number;
+  status: number;
 }
 
 const Users: React.FC = () => {
@@ -37,7 +42,7 @@ const Users: React.FC = () => {
     };
     fetchData();
   }, [page, rowsPerPage]);
-  console.log(users);
+
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
@@ -50,6 +55,41 @@ const Users: React.FC = () => {
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+  };
+
+  const handleBlockUser = (id: number) => {
+    handleConfirmBlockUser(id);
+  };
+
+  const handleUnblockUser = async (id: number) => {
+    try {
+      await updateUser(id, { status: 1 });
+      setUsers(
+        users.map((user) => (user.id === id ? { ...user, status: 1 } : user))
+      );
+    } catch (error) {
+      console.error("Error unblocking user:", error);
+    }
+  };
+
+  const handleConfirmBlockUser = (id: number) => {
+    AntdModal.confirm({
+      title: "Xác nhận",
+      content: "Bạn có chắc chắn muốn block người dùng này?",
+      onOk: () => blockUser(id),
+      onCancel: () => console.log("Cancel"),
+    });
+  };
+
+  const blockUser = async (id: number) => {
+    try {
+      await updateUser(id, { status: 2 });
+      setUsers(
+        users.map((user) => (user.id === id ? { ...user, status: 2 } : user))
+      );
+    } catch (error) {
+      console.error("Error blocking user:", error);
+    }
   };
 
   return (
@@ -69,8 +109,13 @@ const Users: React.FC = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {users.map((user) => (
-                <TableRow key={user.id}>
+              {users.map((user: UserType) => (
+                <TableRow
+                  key={user.id}
+                  style={{
+                    textDecoration: user.status === 2 ? "line-through" : "none",
+                  }}
+                >
                   <TableCell>{user.id}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell className="avatar-img">
@@ -78,7 +123,21 @@ const Users: React.FC = () => {
                   </TableCell>
                   <TableCell>{user.depositedAmount}</TableCell>
                   <TableCell>
-                    <Button variant="outlined">Block</Button>
+                    {user.status === 2 ? (
+                      <Button
+                        variant="outlined"
+                        onClick={() => handleUnblockUser(Number(user.id))}
+                      >
+                        Unblock
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="outlined"
+                        onClick={() => handleBlockUser(Number(user.id))}
+                      >
+                        Block
+                      </Button>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}

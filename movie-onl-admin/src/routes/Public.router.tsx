@@ -27,7 +27,7 @@ const PublicRouters = () => {
           element={<DefaultLayout child={<CreateMovie />} />}
         />
         <Route
-          path="/edit-movie"
+          path="/edit-movie/:id"
           element={<DefaultLayout child={<EditMovie />} />}
         />
         <Route path="/orders" element={<DefaultLayout child={<Order />} />} />
