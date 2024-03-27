@@ -8,9 +8,11 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Modal,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
   TextField,
-  Box,
 } from "@mui/material";
 import "./Category.css";
 import {
@@ -20,19 +22,11 @@ import {
   createCategory,
 } from "../../api/category";
 import { notifyError, notifySuccess } from "../../common/toatify";
-import { Modal as AntdModal } from "antd";
 
 interface CategoryType {
   id?: number;
   name?: string;
   describe?: string;
-}
-
-interface ResponseCategory {
-  status?: number;
-  data?: any;
-  message?: string;
-  success?: boolean;
 }
 
 const Category: React.FC = () => {
@@ -43,6 +37,8 @@ const Category: React.FC = () => {
   );
   const [newCategoryName, setNewCategoryName] = useState("");
   const [newCategoryDescription, setNewCategoryDescription] = useState("");
+  const [action, setAction] = useState<"edit" | "delete">("edit");
+  const [openCreateModal, setOpenCreateModal] = useState(false);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -56,15 +52,20 @@ const Category: React.FC = () => {
     fetchCategories();
   }, []);
 
-  const handleOpenModal = (category: CategoryType | null = null) => {
+  const handleOpenModal = (
+    category: CategoryType | null = null,
+    action: "edit" | "delete"
+  ) => {
     setSelectedCategory(category);
     setNewCategoryName(category?.name || "");
     setNewCategoryDescription(category?.describe || "");
+    setAction(action);
     setOpenModal(true);
   };
 
   const handleCloseModal = () => {
     setOpenModal(false);
+    setOpenCreateModal(false);
     setSelectedCategory(null);
     setNewCategoryName("");
     setNewCategoryDescription("");
@@ -105,24 +106,22 @@ const Category: React.FC = () => {
   };
 
   const handleDeleteCategory = async (id: number) => {
-    AntdModal.confirm({
-      title: "Xác nhận xóa thể loại",
-      content: "Bạn có chắc chắn muốn xóa thể loại này không?",
-      onOk: async () => {
-        try {
-          await deleteCategory(id);
-          const response = await getAllCategories("ASC", 7, 1, "");
-          setCategories(response.data);
-          notifySuccess("Category deleted successfully!");
-        } catch (error) {
-          console.error("Error deleting category:", error);
-          notifyError("Error deleting category. Please try again later.");
-        }
-      },
-      onCancel: () => {
-        console.log("Cancel delete operation");
-      },
-    });
+    handleOpenModal({ id }, "delete");
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!selectedCategory || !selectedCategory.id) return;
+    try {
+      await deleteCategory(selectedCategory.id);
+      const response = await getAllCategories("ASC", 7, 1, "");
+      setCategories(response.data);
+      notifySuccess("Category deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting category:", error);
+      notifyError("Error deleting category. Please try again later.");
+    } finally {
+      handleCloseModal();
+    }
   };
 
   return (
@@ -133,7 +132,7 @@ const Category: React.FC = () => {
         variant="contained"
         color="primary"
         style={{ marginBottom: "20px" }}
-        onClick={() => handleOpenModal()}
+        onClick={() => setOpenCreateModal(true)}
       >
         Tạo thể loại phim
       </Button>
@@ -157,7 +156,7 @@ const Category: React.FC = () => {
                     size="small"
                     variant="outlined"
                     color="primary"
-                    onClick={() => handleOpenModal(category)}
+                    onClick={() => handleOpenModal(category, "edit")}
                   >
                     Sửa
                   </Button>
@@ -175,11 +174,52 @@ const Category: React.FC = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Modal open={openModal} onClose={handleCloseModal}>
-        <Box className="modalContainer">
-          <h2>
-            {selectedCategory ? "Chỉnh sửa thể loại" : "Tạo mới thể loại"}
-          </h2>
+      <Dialog open={openModal} onClose={handleCloseModal}>
+        <DialogTitle>
+          {action === "edit" ? "Chỉnh sửa thể loại" : "Xác nhận xóa thể loại"}
+        </DialogTitle>
+        <DialogContent>
+          {action === "edit" ? (
+            <>
+              <TextField
+                fullWidth
+                id="newCategoryName"
+                label="Tên thể loại"
+                variant="outlined"
+                margin="normal"
+                value={newCategoryName}
+                onChange={(e) => setNewCategoryName(e.target.value)}
+              />
+              <TextField
+                fullWidth
+                id="newCategoryDescription"
+                label="Mô tả thể loại"
+                variant="outlined"
+                margin="normal"
+                value={newCategoryDescription}
+                onChange={(e) => setNewCategoryDescription(e.target.value)}
+              />
+            </>
+          ) : (
+            <p>Bạn có chắc chắn muốn xóa thể loại này không?</p>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal}>Hủy</Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={
+              action === "edit" ? handleUpdateCategory : handleConfirmDelete
+            }
+          >
+            {action === "edit" ? "Lưu" : "Xác nhận"}
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={openCreateModal} onClose={handleCloseModal}>
+        <DialogTitle>Tạo thể loại mới</DialogTitle>
+        <DialogContent>
           <TextField
             fullWidth
             id="newCategoryName"
@@ -198,20 +238,18 @@ const Category: React.FC = () => {
             value={newCategoryDescription}
             onChange={(e) => setNewCategoryDescription(e.target.value)}
           />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal}>Hủy</Button>
           <Button
             variant="contained"
             color="primary"
-            onClick={
-              selectedCategory ? handleUpdateCategory : handleCreateCategory
-            }
+            onClick={handleCreateCategory}
           >
-            {selectedCategory ? "Lưu" : "Tạo mới"}
+            Tạo
           </Button>
-          <span className="closeButton" onClick={handleCloseModal}>
-            &times;
-          </span>
-        </Box>
-      </Modal>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

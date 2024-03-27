@@ -75,7 +75,9 @@ const EditMovie = () => {
     try {
       const response = await updateMovie(Number(id), movieData);
       notifySuccess("Movie updated successfully!");
-      navigate("/movies");
+      setTimeout(() => {
+        navigate("/movies");
+      }, 1000);
     } catch (error) {
       console.error("Error updating movie:", error);
       notifyError("Error updating movie. Please try again later.");
